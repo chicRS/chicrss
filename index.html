@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chic.rs — Patike & Streetwear</title>
+<meta name="description" content="Chic.rs — online streetwear shop u Srbiji">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar">CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI</div>
+<header>
+  <a class="logo" href="#home">CHIC<span>.RS</span></a>
+  <nav><a href="#home">Početna</a><a href="#shop">Shop</a><a href="#about">O nama</a><a href="#contact">Kontakt</a></nav>
+  <div class="head-actions"><button onclick="openAdmin()">ADMIN</button><button class="cart" onclick="openCart()">KORPA <b id="cartCount">0</b></button></div>
+</header>
+
+<main>
+<section class="hero" id="home">
+ <div><p class="eyebrow">CHIC.RS / STREETWEAR</p><h1>WEAR<br><span>YOUR</span><br>ATTITUDE.</h1><p class="desc">Patike i garderoba za svakodnevni streetwear. Izaberi model, veličinu i poruči online.</p><a class="primary" href="#shop">POGLEDAJ PONUDU ↗</a></div>
+ <div class="hero-img"><img src="assets/logo.jpeg" alt="Chic.rs"></div>
+</section>
+<div class="ticker">CHIC.RS ★ SNEAKERS ★ STREETWEAR ★ ONLINE SHOP ★ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★</div>
+
+<section class="section" id="shop">
+ <div class="section-head"><div><p class="eyebrow">ONLINE PONUDA</p><h2>SHOP <span>/ CHIC.RS</span></h2></div>
+ <div class="tabs"><button class="active" data-filter="all">SVE</button><button data-filter="patike">PATIKE</button><button data-filter="garderoba">GARDEROBA</button></div></div>
+ <div class="grid" id="products"><p class="muted">Učitavanje ponude...</p></div>
+</section>
+
+<section class="banner"><div><p class="eyebrow">CHIC COMMUNITY</p><h2>FOLLOW<br><span>@CHIC._RS</span></h2></div><a class="secondary" href="https://www.instagram.com/chic._rs/" target="_blank">INSTAGRAM ↗</a></section>
+
+<section class="two" id="about"><div><p class="eyebrow">O NAMA</p><h2>URBAN.<br>ČISTO.<br>CHIC.</h2></div><p>Chic.rs je online streetwear shop za patike i garderobu. Izaberi proizvod, veličinu i poruči direktno preko sajta.</p></section>
+<section class="two contact" id="contact"><div><p class="eyebrow">KONTAKT</p><h2>IMAŠ<br>PITANJE?</h2></div><div><a class="ig" href="https://www.instagram.com/chic._rs/" target="_blank">@chic._rs ↗</a><p>Za pitanja o modelima, veličinama i dostupnosti piši nam na Instagramu.</p></div></section>
+</main>
+<footer><a class="logo" href="#home">CHIC<span>.RS</span></a><span>© 2026 Chic.rs · @chic._rs</span></footer>
+
+<!-- CART -->
+<div class="modal" id="cartModal" onclick="if(event.target===this)closeCart()"><aside class="drawer"><button class="close" onclick="closeCart()">×</button><p class="eyebrow">TVOJA KUPOVINA</p><h2>KORPA</h2><div id="cartItems"></div><div class="summary"><span>MEĐUZBIR</span><b id="sub">0 RSD</b><span>DOSTAVA</span><b id="ship">—</b><strong>UKUPNO</strong><strong id="total">0 RSD</strong></div><button class="primary full" onclick="checkout()">NASTAVI NA PORUDŽBINU →</button></aside></div>
+
+<!-- CHECKOUT -->
+<div class="modal" id="checkoutModal"><div class="checkout"><button class="close" onclick="closeCheckout()">×</button><p class="eyebrow">CHIC.RS / CHECKOUT</p><h2>PORUČIVANJE</h2><div id="preview"></div>
+<form name="chic-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+<input type="hidden" name="form-name" value="chic-orders"><input type="hidden" name="bot-field">
+<input type="hidden" name="porudzbina" id="order"><input type="hidden" name="ukupno" id="amount">
+<div class="row"><label>Ime i prezime<input name="ime_prezime" required></label><label>Telefon<input name="telefon" required></label></div>
+<div class="row"><label>Grad<input name="grad" required></label><label>Poštanski broj<input name="postanski_broj" required></label></div>
+<label>Adresa i broj<input name="adresa" required></label><label>Napomena<textarea name="napomena"></textarea></label>
+<div class="payment"><b>PLAĆANJE: POUZEĆEM</b><small>Kupac plaća prilikom preuzimanja.</small></div>
+<label class="agree"><input type="checkbox" required> Slažem se sa obradom podataka za obradu porudžbine.</label>
+<button class="primary full">POŠALJI PORUDŽBINU →</button>
+</form></div></div>
+
+<!-- ADMIN LOGIN -->
+<div class="modal" id="loginModal"><div class="admin-login"><button class="close" onclick="closeLogin()">×</button><p class="eyebrow">CHIC.RS / ADMIN</p><h2>ULAZ</h2><p class="muted">Uloguj se da dodaješ, uređuješ i brišeš proizvode. Proizvodi se čuvaju u bazi i vidljivi su svim posetiocima i na svim uređajima.</p>
+<input id="adminPassword" type="password" placeholder="Admin lozinka">
+<button class="primary full" onclick="loginAdmin()">UĐI U ADMIN</button><small id="loginError"></small></div></div>
+
+<!-- ADMIN PANEL -->
+<div class="modal" id="adminModal"><div class="admin-panel"><div class="admin-top"><div><p class="eyebrow">CHIC.RS / ADMIN</p><h2>PROIZVODI</h2></div><div><button class="secondary" onclick="logoutAdmin()">ODJAVA</button><button class="primary" onclick="newProduct()">+ NOVI PROIZVOD</button></div></div>
+<p class="notice">Ovde dodaješ, menjaš i brišeš proizvode. Promene se čuvaju u bazi i odmah su vidljive svim posetiocima sajta, na svim uređajima.</p>
+<div id="adminList"></div>
+<div class="admin-form" id="editor" hidden><button class="close" onclick="hideEditor()">×</button><p class="eyebrow">UREĐIVANJE</p><h3 id="editorTitle">NOVI PROIZVOD</h3>
+<label>Naziv proizvoda<input id="pName"></label><div class="row"><label>Cena (RSD)<input id="pPrice" type="number"></label><label>Kategorija<select id="pCat"><option value="patike">Patike</option><option value="garderoba">Garderoba</option></select></label></div>
+<label>Veličine — odvoji zarezom<input id="pSizes" placeholder="40,41,42,43,44"></label>
+<label>Oznaka<input id="pBadge" placeholder="NEW / BESTSELLER / AKCIJA"></label>
+<label>Slika proizvoda<input id="pImageFile" type="file" accept="image/*"></label>
+<input id="pImage" type="hidden">
+<div class="file-note" id="imagePreviewNote">Otpremi sliku proizvoda sa svog uređaja.</div>
+<input id="pId" type="hidden"><div class="form-actions"><button class="secondary" onclick="hideEditor()">OTKAŽI</button><button class="primary" onclick="saveProduct()">SAČUVAJ PROIZVOD</button></div></div>
+</div></div>
+
+<script>
+const SHIPPING=450;
+let products=[];let cart=JSON.parse(localStorage.getItem("chicCart")||"[]");let filter="all";let editId=null;
+const money=n=>new Intl.NumberFormat("sr-RS").format(n)+" RSD";
+
+async function loadProducts(){
+  try{
+    const res=await fetch("/api/products");
+    products=await res.json();
+  }catch(e){ products=[]; }
+  renderProducts();
+}
+
+function renderProducts(){let list=products.filter(p=>filter==="all"||p.category===filter);const box=document.getElementById("products");if(!list.length){box.innerHTML='<p class="muted">Trenutno nema proizvoda u ovoj kategoriji.</p>';return}box.innerHTML=list.map(p=>`
+<article class="product"><div class="photo"><img src="${p.image}" alt="${p.name}" onerror="this.src='assets/logo.jpeg'"><span>${p.badge||""}</span><button onclick="add(${p.id},'${(p.sizes[0]||"")}')">+ DODAJ</button></div>
+<div class="meta"><div><h3>${p.name}</h3><p>${p.category==="patike"?"Patike / sneakers":"Garderoba / streetwear"}</p></div><b>${money(p.price)}</b></div>
+<div class="sizes">${(p.sizes||[]).map(s=>`<button onclick="add(${p.id},'${s}')">${s}</button>`).join("")}</div></article>`).join("")}
+function add(id,size){let e=cart.find(x=>x.id===id&&x.size===size);if(e)e.qty++;else cart.push({id,size,qty:1});localStorage.setItem("chicCart",JSON.stringify(cart));renderCart();openCart()}
+function renderCart(){document.getElementById("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);let box=document.getElementById("cartItems");if(!cart.length){box.innerHTML='<p class="muted">Korpa je prazna.</p>'}else box.innerHTML=cart.map((x,i)=>{let p=products.find(p=>p.id===x.id);if(!p)return"";return `<div class="cartrow"><img src="${p.image}"><div><b>${p.name}</b><small>Veličina ${x.size} · ${x.qty} kom.</small></div><strong>${money(p.price*x.qty)}</strong><button onclick="removeCart(${i})">×</button></div>`}).join("");let sub=cart.reduce((s,x)=>{let p=products.find(p=>p.id===x.id);return p?s+p.price*x.qty:s},0);document.getElementById("sub").textContent=money(sub);document.getElementById("ship").textContent=sub?money(SHIPPING):"—";document.getElementById("total").textContent=money(sub?sub+SHIPPING:0)}
+function removeCart(i){cart.splice(i,1);localStorage.setItem("chicCart",JSON.stringify(cart));renderCart()}
+function openCart(){document.getElementById("cartModal").classList.add("show");renderCart()}function closeCart(){document.getElementById("cartModal").classList.remove("show")}
+function checkout(){if(!cart.length)return alert("Korpa je prazna.");closeCart();let sub=cart.reduce((s,x)=>{let p=products.find(p=>p.id===x.id);return p?s+p.price*x.qty:s},0),total=sub+SHIPPING;document.getElementById("preview").innerHTML=cart.map(x=>{let p=products.find(p=>p.id===x.id);if(!p)return"";return `<div class="previewrow"><span>${p.name} · ${x.size} × ${x.qty}</span><b>${money(p.price*x.qty)}</b></div>`}).join("")+`<div class="previewrow totalrow"><span>UKUPNO SA DOSTAVOM</span><b>${money(total)}</b></div>`;document.getElementById("order").value=cart.map(x=>{let p=products.find(p=>p.id===x.id);return p?`${p.name} | veličina ${x.size} | količina ${x.qty} | ${money(p.price*x.qty)}`:""}).join(" || ");document.getElementById("amount").value=money(total);document.getElementById("checkoutModal").classList.add("show")}
+function closeCheckout(){document.getElementById("checkoutModal").classList.remove("show")}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");filter=b.dataset.filter;renderProducts()});
+
+// ADMIN
+function openAdmin(){document.getElementById("loginError").textContent="";document.getElementById("loginModal").classList.add("show")}
+function closeLogin(){document.getElementById("loginModal").classList.remove("show")}
+async function loginAdmin(){
+  const password=document.getElementById("adminPassword").value;
+  const res=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});
+  if(!res.ok){document.getElementById("loginError").textContent="Pogrešna lozinka.";return}
+  closeLogin();document.getElementById("adminPassword").value="";
+  document.getElementById("adminModal").classList.add("show");renderAdmin()
+}
+async function logoutAdmin(){await fetch("/api/admin/logout",{method:"POST"});document.getElementById("adminModal").classList.remove("show")}
+function renderAdmin(){let box=document.getElementById("adminList");if(!products.length){box.innerHTML='<p class="muted">Još nema proizvoda. Klikni + NOVI PROIZVOD.</p>';return}box.innerHTML=products.map(p=>`<div class="admin-item"><img src="${p.image}" onerror="this.src='assets/logo.jpeg'"><div><b>${p.name}</b><small>${money(p.price)} · ${p.category} · ${(p.sizes||[]).join(", ")}</small></div><div class="admin-buttons"><button onclick="editProduct(${p.id})">UREDI</button><button class="danger" onclick="deleteProduct(${p.id})">OBRIŠI</button></div></div>`).join("")}
+function newProduct(){editId=null;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="NOVI PROIZVOD";["pName","pPrice","pSizes","pBadge","pImage","pId"].forEach(id=>document.getElementById(id).value="");document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Otpremi sliku proizvoda sa svog uređaja."}
+function editProduct(id){let p=products.find(x=>x.id===id);editId=id;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="UREDI PROIZVOD";document.getElementById("pName").value=p.name;document.getElementById("pPrice").value=p.price;document.getElementById("pCat").value=p.category;document.getElementById("pSizes").value=(p.sizes||[]).join(",");document.getElementById("pBadge").value=p.badge||"";document.getElementById("pImage").value=p.image;document.getElementById("pId").value=p.id;document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Trenutna slika je postavljena. Otpremi novu da je zameniš."}
+function hideEditor(){document.getElementById("editor").hidden=true}
+
+document.getElementById("pImageFile").addEventListener("change",async(e)=>{
+  const file=e.target.files[0];if(!file)return;
+  document.getElementById("imagePreviewNote").textContent="Otpremanje slike...";
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    const dataBase64=reader.result.split(",")[1];
+    const res=await fetch("/api/admin/upload",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({filename:file.name,contentType:file.type,dataBase64})});
+    if(!res.ok){document.getElementById("imagePreviewNote").textContent="Greška pri otpremanju slike.";return}
+    const data=await res.json();
+    document.getElementById("pImage").value=data.image;
+    document.getElementById("imagePreviewNote").textContent="Slika otpremljena.";
+  };
+  reader.readAsDataURL(file);
+});
+
+async function saveProduct(){
+  let name=document.getElementById("pName").value.trim(),price=Number(document.getElementById("pPrice").value),category=document.getElementById("pCat").value,sizes=document.getElementById("pSizes").value.split(",").map(x=>x.trim()).filter(Boolean),badge=document.getElementById("pBadge").value.trim(),image=document.getElementById("pImage").value.trim();
+  if(!name||!price||!image)return alert("Unesi naziv, cenu i sliku.");
+  const body=JSON.stringify({name,price,category,sizes,badge,image});
+  const res=editId
+    ? await fetch(`/api/products/${editId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body})
+    : await fetch("/api/products",{method:"POST",headers:{"Content-Type":"application/json"},body});
+  if(!res.ok){alert("Greška prilikom čuvanja proizvoda.");return}
+  await loadProducts();renderAdmin();hideEditor();
+}
+async function deleteProduct(id){
+  if(!confirm("Obrisati ovaj proizvod?"))return;
+  const res=await fetch(`/api/products/${id}`,{method:"DELETE"});
+  if(!res.ok){alert("Greška prilikom brisanja.");return}
+  await loadProducts();renderAdmin();
+}
+
+renderCart();loadProducts();
+</script>
+</body></html>
