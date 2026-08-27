@@ -260,7 +260,34 @@ function renderAdmin() {
   }).join("");
 }
 function newProduct(){editId=null;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="NOVI PROIZVOD";["pName","pPrice","pSizes","pBadge","pImage","pId"].forEach(id=>document.getElementById(id).value="");document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Otpremi sliku proizvoda sa svog uređaja."}
-function editProduct(id){let p=products.find(x=>x.id===id);editId=id;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="UREDI PROIZVOD";document.getElementById("pName").value=p.name;document.getElementById("pPrice").value=p.price;document.getElementById("pCat").value=p.category;document.getElementById("pSizes").value=(p.sizes||[]).join(",");document.getElementById("pBadge").value=p.badge||"";document.getElementById("pImage").value=p.image;document.getElementById("pId").value=p.id;document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Trenutna slika je postavljena. Otpremi novu da je zameniš."}
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+
+  if (!p) return;
+
+  editId = id;
+
+  document.getElementById("editor").hidden = false;
+  document.getElementById("editorTitle").textContent = "UREDI PROIZVOD";
+
+  document.getElementById("pName").value = p.name || "";
+  document.getElementById("pPrice").value = p.price || "";
+  document.getElementById("pCat").value = p.category || "patike";
+  document.getElementById("pSizes").value = (p.sizes || []).join(",");
+  document.getElementById("pBadge").value = p.badge || "";
+  document.getElementById("pId").value = p.id;
+
+  document.getElementById("pImageFile").value = "";
+
+  const images = Array.isArray(p.images) && p.images.length
+    ? p.images
+    : (p.image ? [p.image] : []);
+
+  document.getElementById("imagePreviewNote").textContent =
+    images.length
+      ? `Proizvod ima ${images.length} ${images.length === 1 ? "sliku" : "slika"}. Izaberi nove slike ako želiš da ih dodaš.`
+      : "Proizvod nema sliku.";
+}
 function hideEditor(){document.getElementById("editor").hidden=true}
 
 async function saveProduct() {
