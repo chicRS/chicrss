@@ -186,7 +186,7 @@ async function saveProduct() {
   renderAdmin();
   hideEditor();
 }
-  let name=document.getElementById("pName").value.trim(),price=Number(document.getElementById("pPrice").value),category=document.getElementById("pCat").value,sizes=document.getElementById("pSizes").value.split(",").map(x=>x.trim()).filter(Boolean),badge=document.getElementById("pBadge").value.trim(),image=document.getElementById("pImage").value.trim();
+  
   if(!name||!price||!image)return alert("Unesi naziv, cenu i sliku.");
   const body=JSON.stringify({name,price,category,sizes,badge,image});
   const res=editId
