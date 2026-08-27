@@ -84,10 +84,92 @@ async function loadProducts(){
   renderProducts();
 }
 
-function renderProducts(){let list=products.filter(p=>filter==="all"||p.category===filter);const box=document.getElementById("products");if(!list.length){box.innerHTML='<p class="muted">Trenutno nema proizvoda u ovoj kategoriji.</p>';return}box.innerHTML=list.map(p=>`
-<article class="product"><div class="photo"><img src="${p.image}" alt="${p.name}" onerror="this.src='assets/logo.jpeg'"><span>${p.badge||""}</span><button onclick="add(${p.id},'${(p.sizes[0]||"")}')">+ DODAJ</button></div>
-<div class="meta"><div><h3>${p.name}</h3><p>${p.category==="patike"?"Patike / sneakers":"Garderoba / streetwear"}</p></div><b>${money(p.price)}</b></div>
-<div class="sizes">${(p.sizes||[]).map(s=>`<button onclick="add(${p.id},'${s}')">${s}</button>`).join("")}</div></article>`).join("")}
+function renderProducts() {
+  let list = products.filter(
+    p => filter === "all" || p.category === filter
+  );
+
+  const box = document.getElementById("products");
+
+  if (!list.length) {
+    box.innerHTML =
+      '<p class="muted">Trenutno nema proizvoda u ovoj kategoriji.</p>';
+    return;
+  }
+
+  box.innerHTML = list.map(p => {
+    const images = Array.isArray(p.images) && p.images.length
+      ? p.images
+      : (p.image ? [p.image] : []);
+
+    const galleryId = `gallery-${p.id}`;
+
+    window.productImages = window.productImages || {};
+    window.productImageIndexes = window.productImageIndexes || {};
+
+    window.productImages[galleryId] = images;
+    window.productImageIndexes[galleryId] = 0;
+
+    return `
+      <article class="product">
+
+        <div class="photo">
+
+          <img
+            id="${galleryId}-image"
+            src="${images[0] || 'assets/logo.jpeg'}"
+            alt="${p.name}"
+            onerror="this.src='assets/logo.jpeg'"
+          >
+
+          ${images.length > 1 ? `
+            <button
+              class="gallery-arrow gallery-prev"
+              onclick="changeProductImage('${galleryId}', -1)"
+            >‹</button>
+
+            <button
+              class="gallery-arrow gallery-next"
+              onclick="changeProductImage('${galleryId}', 1)"
+            >›</button>
+
+            <div
+              class="gallery-counter"
+              id="${galleryId}-counter"
+            >1 / ${images.length}</div>
+          ` : ""}
+
+          <span>${p.badge || ""}</span>
+
+          <button onclick="add(${p.id},'${(p.sizes?.[0] || "")}')">
+            + DODAJ
+          </button>
+
+        </div>
+
+        <div class="meta">
+          <div>
+            <h3>${p.name}</h3>
+            <p>
+              ${p.category === "patike"
+                ? "Patike / sneakers"
+                : "Garderoba / streetwear"}
+            </p>
+          </div>
+
+          <b>${money(p.price)}</b>
+        </div>
+
+        <div class="sizes">
+          ${(p.sizes || []).map(s =>
+            `<button onclick="add(${p.id},'${s}')">${s}</button>`
+          ).join("")}
+        </div>
+
+      </article>
+    `;
+  }).join("");
+}
 function add(id,size){let e=cart.find(x=>x.id===id&&x.size===size);if(e)e.qty++;else cart.push({id,size,qty:1});localStorage.setItem("chicCart",JSON.stringify(cart));renderCart();openCart()}
 function renderCart(){document.getElementById("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);let box=document.getElementById("cartItems");if(!cart.length){box.innerHTML='<p class="muted">Korpa je prazna.</p>'}else box.innerHTML=cart.map((x,i)=>{let p=products.find(p=>p.id===x.id);if(!p)return"";return `<div class="cartrow"><img src="${p.image}"><div><b>${p.name}</b><small>Veličina ${x.size} · ${x.qty} kom.</small></div><strong>${money(p.price*x.qty)}</strong><button onclick="removeCart(${i})">×</button></div>`}).join("");let sub=cart.reduce((s,x)=>{let p=products.find(p=>p.id===x.id);return p?s+p.price*x.qty:s},0);document.getElementById("sub").textContent=money(sub);document.getElementById("ship").textContent=sub?money(SHIPPING):"—";document.getElementById("total").textContent=money(sub?sub+SHIPPING:0)}
 function removeCart(i){cart.splice(i,1);localStorage.setItem("chicCart",JSON.stringify(cart));renderCart()}
