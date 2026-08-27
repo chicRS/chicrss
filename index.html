@@ -219,7 +219,46 @@ async function loginAdmin(){
   document.getElementById("adminModal").classList.add("show");renderAdmin()
 }
 async function logoutAdmin(){await fetch("/api/admin/logout",{method:"POST"});document.getElementById("adminModal").classList.remove("show")}
-function renderAdmin(){let box=document.getElementById("adminList");if(!products.length){box.innerHTML='<p class="muted">Još nema proizvoda. Klikni + NOVI PROIZVOD.</p>';return}box.innerHTML=products.map(p=>`<div class="admin-item"><img src="${p.image}" onerror="this.src='assets/logo.jpeg'"><div><b>${p.name}</b><small>${money(p.price)} · ${p.category} · ${(p.sizes||[]).join(", ")}</small></div><div class="admin-buttons"><button onclick="editProduct(${p.id})">UREDI</button><button class="danger" onclick="deleteProduct(${p.id})">OBRIŠI</button></div></div>`).join("")}
+function renderAdmin() {
+  let box = document.getElementById("adminList");
+
+  if (!products.length) {
+    box.innerHTML =
+      '<p class="muted">Još nema proizvoda. Klikni + NOVI PROIZVOD.</p>';
+    return;
+  }
+
+  box.innerHTML = products.map(p => {
+    const images = Array.isArray(p.images) && p.images.length
+      ? p.images
+      : (p.image ? [p.image] : []);
+
+    return `
+      <div class="admin-item">
+        <img
+          src="${images[0] || 'assets/logo.jpeg'}"
+          onerror="this.src='assets/logo.jpeg'"
+        >
+
+        <div>
+          <b>${p.name}</b>
+          <small>
+            ${money(p.price)} · ${p.category} ·
+            ${(p.sizes || []).join(", ")}
+            · ${images.length} ${images.length === 1 ? "slika" : "slika"}
+          </small>
+        </div>
+
+        <div class="admin-buttons">
+          <button onclick="editProduct(${p.id})">UREDI</button>
+          <button class="danger" onclick="deleteProduct(${p.id})">
+            OBRIŠI
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
 function newProduct(){editId=null;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="NOVI PROIZVOD";["pName","pPrice","pSizes","pBadge","pImage","pId"].forEach(id=>document.getElementById(id).value="");document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Otpremi sliku proizvoda sa svog uređaja."}
 function editProduct(id){let p=products.find(x=>x.id===id);editId=id;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="UREDI PROIZVOD";document.getElementById("pName").value=p.name;document.getElementById("pPrice").value=p.price;document.getElementById("pCat").value=p.category;document.getElementById("pSizes").value=(p.sizes||[]).join(",");document.getElementById("pBadge").value=p.badge||"";document.getElementById("pImage").value=p.image;document.getElementById("pId").value=p.id;document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Trenutna slika je postavljena. Otpremi novu da je zameniš."}
 function hideEditor(){document.getElementById("editor").hidden=true}
