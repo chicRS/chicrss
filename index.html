@@ -112,20 +112,8 @@ function newProduct(){editId=null;document.getElementById("editor").hidden=false
 function editProduct(id){let p=products.find(x=>x.id===id);editId=id;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="UREDI PROIZVOD";document.getElementById("pName").value=p.name;document.getElementById("pPrice").value=p.price;document.getElementById("pCat").value=p.category;document.getElementById("pSizes").value=(p.sizes||[]).join(",");document.getElementById("pBadge").value=p.badge||"";document.getElementById("pImage").value=p.image;document.getElementById("pId").value=p.id;document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Trenutna slika je postavljena. Otpremi novu da je zameniš."}
 function hideEditor(){document.getElementById("editor").hidden=true}
 
-document.getElementById("pImageFile").addEventListener("change",async(e)=>{
-  const file=e.target.files[0];if(!file)return;
-  document.getElementById("imagePreviewNote").textContent="Otpremanje slike...";
-  const reader=new FileReader();
-  reader.onload=async()=>{
-    const dataBase64=reader.result.split(",")[1];
-    const res=await fetch("/api/admin/upload",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({filename:file.name,contentType:file.type,dataBase64})});
-    if(!res.ok){document.getElementById("imagePreviewNote").textContent="Greška pri otpremanju slike.";return}
-    const data=await res.json();
-    document.getElementById("pImage").value=data.image;
-    document.getElementById("imagePreviewNote").textContent="Slika otpremljena.";
-  };
-  reader.readAsDataURL(file);
-});
+
+
 
 async function saveProduct() {
   const name = document.getElementById("pName").value.trim();
