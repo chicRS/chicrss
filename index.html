@@ -112,9 +112,6 @@ function newProduct(){editId=null;document.getElementById("editor").hidden=false
 function editProduct(id){let p=products.find(x=>x.id===id);editId=id;document.getElementById("editor").hidden=false;document.getElementById("editorTitle").textContent="UREDI PROIZVOD";document.getElementById("pName").value=p.name;document.getElementById("pPrice").value=p.price;document.getElementById("pCat").value=p.category;document.getElementById("pSizes").value=(p.sizes||[]).join(",");document.getElementById("pBadge").value=p.badge||"";document.getElementById("pImage").value=p.image;document.getElementById("pId").value=p.id;document.getElementById("pImageFile").value="";document.getElementById("imagePreviewNote").textContent="Trenutna slika je postavljena. Otpremi novu da je zameniš."}
 function hideEditor(){document.getElementById("editor").hidden=true}
 
-
-
-
 async function saveProduct() {
   const name = document.getElementById("pName").value.trim();
   const price = Number(document.getElementById("pPrice").value);
@@ -129,15 +126,75 @@ async function saveProduct() {
 
   const badge = document.getElementById("pBadge").value.trim();
 
-  const images = document
-    .getElementById("pImages")
-    .value
-    .split("\n")
-    .map(x => x.trim())
-    .filter(Boolean);
+  const imageInput = document.getElementById("pImageFile");
+  const files = Array.from(imageInput.files || []);
 
-  if (!name || !price || images.length === 0) {
-    return alert("Unesi naziv, cenu i bar jednu sliku.");
+  if (!name || !price) {
+    return alert("Unesi naziv i cenu.");
+  }
+
+  if (!files.length && !editId) {
+    return alert("Izaberi bar jednu sliku.");
+  }
+
+  const images = [];
+
+  // Ako uređujemo proizvod i nisu izabrane nove slike,
+  // zadržavamo postojeće slike.
+  if (editId) {
+    const oldProduct = products.find(p => p.id === editId);
+
+    if (oldProduct) {
+      if (Array.isArray(oldProduct.images)) {
+        images.push(...oldProduct.images);
+      } else if (oldProduct.image) {
+        images.push(oldProduct.image);
+      }
+    }
+  }
+
+  // Otpremi sve izabrane slike
+  for (const file of files) {
+    document.getElementById("imagePreviewNote").textContent =
+      `Otpremanje ${images.length + 1} / ${files.length}...`;
+
+    const dataBase64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result.split(",")[1]);
+      };
+
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    const uploadRes = await fetch("/api/admin/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        filename: file.name,
+        contentType: file.type,
+        dataBase64
+      })
+    });
+
+    if (!uploadRes.ok) {
+      alert(`Greška pri otpremanju slike: ${file.name}`);
+      return;
+    }
+
+    const data = await uploadRes.json();
+
+    if (data.image) {
+      images.push(data.image);
+    }
+  }
+
+  if (!images.length) {
+    return alert("Nema slike proizvoda.");
   }
 
   const body = JSON.stringify({
@@ -146,6 +203,7 @@ async function saveProduct() {
     category,
     sizes,
     badge,
+    image: images[0],
     images
   });
 
@@ -174,6 +232,9 @@ async function saveProduct() {
   renderAdmin();
   hideEditor();
 }
+
+
+
   
   
 renderCart();loadProducts();
