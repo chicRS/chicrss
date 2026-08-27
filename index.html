@@ -187,21 +187,7 @@ async function saveProduct() {
   hideEditor();
 }
   
-  if(!name||!price||!image)return alert("Unesi naziv, cenu i sliku.");
-  const body=JSON.stringify({name,price,category,sizes,badge,image});
-  const res=editId
-    ? await fetch(`/api/products/${editId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body})
-    : await fetch("/api/products",{method:"POST",headers:{"Content-Type":"application/json"},body});
-  if(!res.ok){alert("Greška prilikom čuvanja proizvoda.");return}
-  await loadProducts();renderAdmin();hideEditor();
-}
-async function deleteProduct(id){
-  if(!confirm("Obrisati ovaj proizvod?"))return;
-  const res=await fetch(`/api/products/${id}`,{method:"DELETE"});
-  if(!res.ok){alert("Greška prilikom brisanja.");return}
-  await loadProducts();renderAdmin();
-}
-
+  
 renderCart();loadProducts();
 </script>
 </body></html>
