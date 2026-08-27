@@ -290,7 +290,39 @@ function editProduct(id) {
       : "Proizvod nema sliku.";
 }
 function hideEditor(){document.getElementById("editor").hidden=true}
+document.getElementById("pImageFile").addEventListener("change", (e) => {
+  const files = Array.from(e.target.files || []);
+  const preview = document.getElementById("imagePreview");
 
+  preview.innerHTML = "";
+
+  if (!files.length) {
+    document.getElementById("imagePreviewNote").textContent =
+      "Otpremi slike proizvoda sa svog uređaja.";
+    return;
+  }
+
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const img = document.createElement("img");
+      img.src = reader.result;
+      img.alt = `Slika ${index + 1}`;
+      img.style.width = "90px";
+      img.style.height = "90px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "10px";
+      img.style.margin = "5px";
+      preview.appendChild(img);
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("imagePreviewNote").textContent =
+    `${files.length} ${files.length === 1 ? "slika izabrana" : "slike izabrane"}.`;
+});
 async function saveProduct() {
   const name = document.getElementById("pName").value.trim();
   const price = Number(document.getElementById("pPrice").value);
