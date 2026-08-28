@@ -2368,25 +2368,27 @@ async function saveProduct() {
     };
 
 
-    const result =
-      await adminRequest(
-        "/api/products",
-        {
-          method:
-            editId
-              ? "PUT"
-              : "POST",
+    const apiUrl = editId
+  ? `/api/products/${encodeURIComponent(editId)}`
+  : "/api/products";
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
+const result =
+  await adminRequest(
+    apiUrl,
+    {
+      method: editId
+        ? "PUT"
+        : "POST",
 
-          body:
-            JSON.stringify(payload)
-        }
-      );
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
 
+      body:
+        JSON.stringify(payload)
+    }
+  );
 
     /*
       Ako backend vrati proizvod,
