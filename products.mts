@@ -18,8 +18,8 @@ type Product = {
   createdAt: string;
 };
 
-const STORE = "chic-products";
-const KEY = "products";
+const STORE_NAME = "chic-products";
+const PRODUCTS_KEY = "products";
 
 const seed: Product[] = [
   {
@@ -69,103 +69,323 @@ const seed: Product[] = [
   }
 ];
 
-function store() {
-  return getStore({ name: STORE, consistency: "strong" });
+function getProductsStore() {
+  return getStore(STORE_NAME);
 }
 
 async function readProducts(): Promise<Product[]> {
-  const data = await store().get(KEY, { type: "json", consistency: "strong" }) as Product[] | null;
-  if (Array.isArray(data)) return data;
-  await store().setJSON(KEY, seed);
+  const store = getProductsStore();
+
+  const data = await store.get(PRODUCTS_KEY, {
+    type: "json"
+  }) as Product[] | null;
+
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  await store.setJSON(PRODUCTS_KEY, seed);
+
   return seed;
 }
 
 async function writeProducts(products: Product[]) {
-  await store().setJSON(KEY, products);
+  const store = getProductsStore();
+  await store.setJSON(PRODUCTS_KEY, products);
 }
 
-function bodyImages(body: any): string[] {
-  if (Array.isArray(body.images)) return body.images.map(String).filter(Boolean);
-  return body.image ? [String(body.image)] : [];
+function getImages(body: any): string[] {
+  if (Array.isArray(body?.images)) {
+    return body.images
+      .map((x: unknown) => String(x || "").trim())
+      .filter(Boolean);
+  }
+
+  if (body?.image) {
+    return [String(body.image).trim()];
+  }
+
+  return [];
+}
+
+function getSizes(body: any): string[] {
+  if (Array.isArray(body?.sizes)) {
+    return body.sizes
+      .map((x: unknown) => String(x || "").trim())
+      .filter(Boolean);
+  }
+
+  return String(body?.sizes || "")
+    .split(",")
+    .map((x: string) => x.trim())
+    .filter(Boolean);
 }
 
 function cleanProduct(body: any, old?: Product): Product {
-  const images = bodyImages(body);
-  const price = Math.floor(Number(body.price));
-  const stock = Math.max(0, Math.floor(Number(body.stock || 0)));
-  const sortOrder = Math.max(1, Math.floor(Number(body.sortOrder || 1)));
+  const images = getImages(body);
+
+  const priceNumber = Number(body?.price);
+  const stockNumber = Number(body?.stock);
+  const orderNumber = Number(body?.sortOrder);
+
+  const price = Number.isFinite(priceNumber)
+    ? Math.floor(priceNumber)
+    : 0;
+
+  const stock = Number.isFinite(stockNumber)
+    ? Math.max(0, Math.floor(stockNumber))
+    : 0;
+
+  const sortOrder = Number.isFinite(orderNumber)
+    ? Math.max(1, Math.floor(orderNumber))
+    : 1;
+
   return {
     id: old?.id ?? 0,
-    name: String(body.name || "").trim(),
+
+    name: String(body?.name || "").trim(),
+
     price,
-    category: String(body.category || "patike").trim(),
-    sizes: Array.isArray(body.sizes)
-      ? body.sizes.map(String).map(x => x.trim()).filter(Boolean)
-      : String(body.sizes || "").split(",").map((x: string) => x.trim()).filter(Boolean),
-    badge: String(body.badge || "").trim(),
+
+    category:
+      body?.category === "garderoba"
+        ? "garderoba"
+        : "patike",
+
+    sizes: getSizes(body),
+
+    badge: String(body?.badge || "").trim(),
+
     image: images[0] || "",
+
     images,
-    description: String(body.description || ""),
-    brand: String(body.brand || "").trim(),
+
+    description: String(body?.description || "").trim(),
+
+    brand: String(body?.brand || "").trim(),
+
     stock,
+
     sortOrder,
-    createdAt: old?.createdAt || new Date().toISOString()
+
+    createdAt:
+      old?.createdAt ||
+      new Date().toISOString()
   };
 }
 
-export default async (req: Request, context: { params: Record<string, string> }) => {
-  try {
-    const id = context.params.id ? Number(context.params.id) : null;
+function getId(context: {
+  params?: Record<string, string>;
+}): number | null {
+  const rawId = context?.params?.id;
 
+  if (!rawId) {
+    return null;
+  }
+
+  const id = Number(rawId);
+
+  if (!Number.isFinite(id) || id <= 0) {
+    return null;
+  }
+
+  return Math.floor(id);
+}
+
+export default async (
+  req: Request,
+  context: {
+    params?: Record<string, string>;
+  }
+) => {
+  try {
+    /*
+     * GET
+     * Svi proizvodi mogu da se čitaju bez admin prijave.
+     */
     if (req.method === "GET") {
       const products = await readProducts();
-      products.sort((a, b) => (a.sortOrder - b.sortOrder) || (a.id - b.id));
+
+      products.sort(
+        (a, b) =>
+          (Number(a.sortOrder) - Number(b.sortOrder)) ||
+          (Number(a.id) - Number(b.id))
+      );
+
       return Response.json(products);
     }
 
-    if (!isAuthorized(req)) return unauthorized();
+    /*
+     * Sve ostale akcije zahtevaju admin sesiju.
+     */
+    if (!isAuthorized(req)) {
+      return unauthorized();
+    }
 
     const products = await readProducts();
 
+    /*
+     * POST
+     * Novi proizvod.
+     */
     if (req.method === "POST") {
       const body = await req.json();
+
       const product = cleanProduct(body);
-      if (!product.name || !Number.isFinite(product.price) || product.price <= 0 || !product.category || product.images.length === 0) {
-        return Response.json({ error: "Missing required fields" }, { status: 400 });
+
+      if (
+        !product.name ||
+        !Number.isFinite(product.price) ||
+        product.price <= 0 ||
+        !product.category ||
+        product.images.length === 0
+      ) {
+        return Response.json(
+          {
+            error:
+              "Nedostaju obavezna polja: naziv, cena, kategorija ili slika."
+          },
+          { status: 400 }
+        );
       }
-      product.id = products.reduce((max, p) => Math.max(max, Number(p.id) || 0), 0) + 1;
+
+      const highestId = products.reduce(
+        (max, item) =>
+          Math.max(max, Number(item.id) || 0),
+        0
+      );
+
+      product.id = highestId + 1;
+
       products.push(product);
+
       await writeProducts(products);
-      return Response.json(product, { status: 201 });
+
+      return Response.json(product, {
+        status: 201
+      });
     }
 
+    /*
+     * PUT
+     * Izmena postojećeg proizvoda.
+     */
     if (req.method === "PUT") {
-      if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
-      const index = products.findIndex(p => Number(p.id) === id);
-      if (index < 0) return Response.json({ error: "Not found" }, { status: 404 });
-      const body = await req.json();
-      const product = cleanProduct(body, products[index]);
-      if (!product.name || !Number.isFinite(product.price) || product.price <= 0 || !product.category || product.images.length === 0) {
-        return Response.json({ error: "Missing required fields" }, { status: 400 });
+      const id = getId(context);
+
+      if (!id) {
+        return Response.json(
+          { error: "Nedostaje ID proizvoda." },
+          { status: 400 }
+        );
       }
+
+      const index = products.findIndex(
+        item => Number(item.id) === id
+      );
+
+      if (index === -1) {
+        return Response.json(
+          { error: "Proizvod nije pronađen." },
+          { status: 404 }
+        );
+      }
+
+      const body = await req.json();
+
+      const product = cleanProduct(
+        body,
+        products[index]
+      );
+
+      if (
+        !product.name ||
+        !Number.isFinite(product.price) ||
+        product.price <= 0 ||
+        !product.category ||
+        product.images.length === 0
+      ) {
+        return Response.json(
+          {
+            error:
+              "Nedostaju obavezna polja: naziv, cena, kategorija ili slika."
+          },
+          { status: 400 }
+        );
+      }
+
       products[index] = product;
+
       await writeProducts(products);
+
       return Response.json(product);
     }
 
+    /*
+     * DELETE
+     * Brisanje proizvoda.
+     */
     if (req.method === "DELETE") {
-      if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
-      const next = products.filter(p => Number(p.id) !== id);
-      if (next.length === products.length) return Response.json({ error: "Not found" }, { status: 404 });
-      await writeProducts(next);
-      return new Response(null, { status: 204 });
+      const id = getId(context);
+
+      if (!id) {
+        return Response.json(
+          { error: "Nedostaje ID proizvoda." },
+          { status: 400 }
+        );
+      }
+
+      const index = products.findIndex(
+        item => Number(item.id) === id
+      );
+
+      if (index === -1) {
+        return Response.json(
+          { error: "Proizvod nije pronađen." },
+          { status: 404 }
+        );
+      }
+
+      products.splice(index, 1);
+
+      await writeProducts(products);
+
+      return new Response(null, {
+        status: 204
+      });
     }
 
-    return new Response("Method not allowed", { status: 405 });
+    return new Response(
+      "Method not allowed",
+      {
+        status: 405,
+        headers: {
+          Allow: "GET, POST, PUT, DELETE"
+        }
+      }
+    );
+
   } catch (error: any) {
-    console.error("PRODUCTS_API_ERROR", error);
-    return Response.json({ error: "Products storage error", detail: String(error?.message || error) }, { status: 500 });
+    console.error(
+      "CHIC_PRODUCTS_ERROR",
+      error
+    );
+
+    return Response.json(
+      {
+        error: "Greška pri radu sa proizvodima.",
+        detail: String(
+          error?.message || error
+        )
+      },
+      { status: 500 }
+    );
   }
 };
 
-export const config: Config = { path: ["/api/products", "/api/products/:id"] };
+export const config: Config = {
+  path: [
+    "/api/products",
+    "/api/products/:id"
+  ]
+};
