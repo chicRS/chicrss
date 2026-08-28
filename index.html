@@ -321,118 +321,118 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
       Netlify prepoznaje formu iz HTML-a.
       forma ima name="chic-orders" i data-netlify="true".
     -->
+<form
+  name="chic-orders"
+  method="POST"
+  action="/"
+  data-netlify="true"
+  data-netlify-honeypot="bot-field"
+  id="orderForm"
+>
 
-    <form
-      name="chic-orders"
-      method="POST"
-      action="/"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      id="orderForm"
+  <input type="hidden" name="form-name" value="chic-orders">
+
+  <p hidden>
+    <label>
+      Ne popunjavati:
+      <input name="bot-field">
+    </label>
+  </p>
+
+  <input type="hidden" name="porudzbina" id="order">
+  <input type="hidden" name="ukupno" id="amount">
+
+  <div class="row">
+
+    <label>
+      Ime i prezime
+      <input
+        name="ime_prezime"
+        autocomplete="name"
+        required
+      >
+    </label>
+
+    <label>
+      Telefon
+      <input
+        name="telefon"
+        type="tel"
+        autocomplete="tel"
+        required
+      >
+    </label>
+
+  </div>
+
+  <div class="row">
+
+    <label>
+      Grad
+      <input
+        name="grad"
+        autocomplete="address-level2"
+        required
+      >
+    </label>
+
+    <label>
+      Poštanski broj
+      <input
+        name="postanski_broj"
+        inputmode="numeric"
+        autocomplete="postal-code"
+        required
+      >
+    </label>
+
+  </div>
+
+  <label>
+    Adresa i broj
+    <input
+      name="adresa"
+      autocomplete="street-address"
+      required
+    >
+  </label>
+
+  <label>
+    Napomena
+    <textarea name="napomena"></textarea>
+  </label>
+
+  <div class="payment">
+    <b>PLAĆANJE: POUZEĆEM</b>
+    <small>
+      Kupac plaća prilikom preuzimanja.
+    </small>
+  </div>
+
+  <label class="agree">
+
+    <input
+      type="checkbox"
+      name="saglasnost"
+      value="da"
+      required
     >
 
-      <input type="hidden" name="form-name" value="chic-orders">
+    Slažem se sa obradom podataka
+    za obradu porudžbine.
 
-      <p hidden>
-        <label>
-          Ne popunjavati:
-          <input name="bot-field">
-        </label>
-      </p>
+  </label>
 
-      <input type="hidden" name="porudzbina" id="order">
-      <input type="hidden" name="ukupno" id="amount">
+  <button
+    type="submit"
+    id="submitOrder"
+    class="primary full"
+  >
+    POŠALJI PORUDŽBINU →
+  </button>
 
-      <div class="row">
-
-        <label>
-          Ime i prezime
-          <input
-            name="ime_prezime"
-            autocomplete="name"
-            required
-          >
-        </label>
-
-        <label>
-          Telefon
-          <input
-            name="telefon"
-            type="tel"
-            autocomplete="tel"
-            required
-          >
-        </label>
-
-      </div>
-
-      <div class="row">
-
-        <label>
-          Grad
-          <input
-            name="grad"
-            autocomplete="address-level2"
-            required
-          >
-        </label>
-
-        <label>
-          Poštanski broj
-          <input
-            name="postanski_broj"
-            inputmode="numeric"
-            autocomplete="postal-code"
-            required
-          >
-        </label>
-
-      </div>
-
-      <label>
-        Adresa i broj
-        <input
-          name="adresa"
-          autocomplete="street-address"
-          required
-        >
-      </label>
-
-      <label>
-        Napomena
-        <textarea name="napomena"></textarea>
-      </label>
-
-      <div class="payment">
-        <b>PLAĆANJE: POUZEĆEM</b>
-        <small>
-          Kupac plaća prilikom preuzimanja.
-        </small>
-      </div>
-
-      <label class="agree">
-
-        <input
-          type="checkbox"
-          name="saglasnost"
-          value="da"
-          required
-        >
-
-        Slažem se sa obradom podataka
-        za obradu porudžbine.
-
-      </label>
-
-      <button
-        type="submit"
-        id="submitOrder"
-        class="primary full"
-      >
-        POŠALJI PORUDŽBINU →
-      </button>
-
-    </form>
+</form>
+  
 
   </div>
 </div>
@@ -1547,131 +1547,74 @@ function closeCheckout() {
    NETLIFY ORDER FORM
 ========================= */
 
-const orderForm =
-  $("orderForm");
-
+const orderForm = $("orderForm");
 
 if (orderForm) {
+  orderForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-  orderForm.addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-      const button =
-        $("submitOrder");
-
-      if (!orderForm.reportValidity()) {
-        return;
-      }
-
-      if (button) {
-
-        button.disabled = true;
-
-        button.textContent =
-          "SLANJE PORUDŽBINE...";
-      }
-
-
-      try {
-
-        const formData =
-          new FormData(orderForm);
-
-        formData.set(
-          "form-name",
-          "chic-orders"
-        );
-
-
-        const encoded =
-          new URLSearchParams();
-
-        for (
-          const [key,value]
-          of formData.entries()
-        ) {
-
-          encoded.append(
-            key,
-            value
-          );
-
-        }
-
-
-        const response =
-          await fetch(
-            "/",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded"
-              },
-
-              body:
-                encoded.toString()
-            }
-          );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "HTTP " + response.status
-          );
-        }
-
-
-        alert(
-          "Porudžbina je uspešno poslata! Hvala na kupovini."
-        );
-
-
-        cart = [];
-
-        localStorage.removeItem(
-          "chicCart"
-        );
-
-        renderCart();
-
-        orderForm.reset();
-
-        closeCheckout();
-
-
-      } catch (error) {
-
-        console.error(
-          "ORDER ERROR:",
-          error
-        );
-
-        alert(
-          "Greška pri slanju porudžbine. Proveri Netlify Forms podešavanje i pokušaj ponovo."
-        );
-
-
-      } finally {
-
-        if (button) {
-
-          button.disabled = false;
-
-          button.textContent =
-            "POŠALJI PORUDŽBINU →";
-        }
-
-      }
-
+    if (!orderForm.reportValidity()) {
+      return;
     }
-  );
 
+    const button = $("submitOrder");
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "SLANJE PORUDŽBINE...";
+    }
+
+    try {
+      const formData = new FormData(orderForm);
+
+      const body = new URLSearchParams();
+
+      body.append("form-name", "chic-orders");
+
+      for (const [key, value] of formData.entries()) {
+        body.append(key, String(value));
+      }
+
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: body.toString()
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
+      alert(
+        "Porudžbina je uspešno poslata! Hvala na kupovini."
+      );
+
+      cart = [];
+
+      localStorage.removeItem("chicCart");
+
+      renderCart();
+
+      orderForm.reset();
+
+      closeCheckout();
+
+    } catch (error) {
+      console.error("ORDER ERROR:", error);
+
+      alert(
+        "Greška pri slanju porudžbine. Pokušaj ponovo."
+      );
+
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = "POŠALJI PORUDŽBINU →";
+      }
+    }
+  });
 }
 
 
