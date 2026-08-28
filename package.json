@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@netlify/functions": "^4.2.3",
-    "@netlify/blobs": "^9.0.0"
+    "@netlify/blobs": "^9.0.0",
+    "drizzle-orm": "^0.44.5",
+    "pg": "^8.16.3"
   }
 }
