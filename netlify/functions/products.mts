@@ -68,43 +68,67 @@ function getId(
     // ignorisanje greške URL-a
   }
 
-  return null;
-}
-
 function normalize(body: any, id: number): Product | null {
-  const images = Array.isArray(body.images)
+  const existingImages = Array.isArray(body.images)
     ? body.images
         .filter(Boolean)
         .map(String)
-    : body.image
-      ? [String(body.image)]
-      : [];
+    : [];
+
+  const newImages = Array.isArray(body.newImages)
+    ? body.newImages
+        .filter(
+          (x: any) =>
+            x &&
+            typeof x.data === "string"
+        )
+        .map(
+          (x: any) =>
+            `data:${x.type || "image/jpeg"};base64,${x.data}`
+        )
+    : [];
+
+  const images = [
+    ...existingImages,
+    ...newImages
+  ];
 
   const sizes = Array.isArray(body.sizes)
     ? body.sizes
         .map(String)
-        .map(s => s.trim())
+        .map((s: string) => s.trim())
         .filter(Boolean)
     : String(body.sizes || "")
         .split(",")
-        .map(s => s.trim())
+        .map((s: string) => s.trim())
         .filter(Boolean);
 
   const product: Product = {
     id,
+
     name: String(body.name || "").trim(),
+
     price: Number(body.price),
+
     category: String(body.category || "").trim(),
+
     description: String(body.description || "").trim(),
+
     brand: String(body.brand || "").trim(),
+
     stock: Math.max(
       0,
       Number(body.stock || 0)
     ),
+
     sortOrder: Number(body.sortOrder || 0),
+
     sizes,
+
     badge: String(body.badge || "").trim(),
+
     image: images[0] || "",
+
     images
   };
 
@@ -120,6 +144,8 @@ function normalize(body: any, id: number): Product | null {
 
   return product;
 }
+
+
 
 export default async (
   req: Request,
