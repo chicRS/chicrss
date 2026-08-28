@@ -9,11 +9,14 @@ function toClient(p: typeof products.$inferSelect) {
 
   try {
     const parsed = JSON.parse(p.image || "");
+
     if (Array.isArray(parsed)) {
-      images = parsed.filter(Boolean);
+      images = parsed.filter(Boolean).map(String);
     }
   } catch {
-    if (p.image) images = [p.image];
+    if (p.image) {
+      images = [p.image];
+    }
   }
 
   return {
@@ -21,8 +24,13 @@ function toClient(p: typeof products.$inferSelect) {
     name: p.name,
     price: p.price,
     category: p.category,
-    sizes: p.sizes ? p.sizes.split(",").filter(Boolean) : [],
-    badge: p.badge,
+    brand: p.brand || "",
+    stock: p.stock ?? 0,
+    sortOrder: p.sortOrder ?? 0,
+    sizes: p.sizes
+      ? p.sizes.split(",").filter(Boolean)
+      : [],
+    badge: p.badge || "",
     image: images[0] || "",
     images,
   };
@@ -30,7 +38,9 @@ function toClient(p: typeof products.$inferSelect) {
 
 function getImages(body: any): string[] {
   if (Array.isArray(body.images)) {
-    return body.images.filter(Boolean).map(String);
+    return body.images
+      .filter(Boolean)
+      .map(String);
   }
 
   if (body.image) {
@@ -44,35 +54,59 @@ export default async (
   req: Request,
   context: { params: Record<string, string> }
 ) => {
-  const id = context.params.id ? Number(context.params.id) : null;
+  const id = context.params.id
+    ? Number(context.params.id)
+    : null;
 
+  /*
+   * GET — javno učitavanje proizvoda
+   */
   if (req.method === "GET") {
     const rows = await db
       .select()
       .from(products)
-      .orderBy(products.id);
+      .orderBy(products.sortOrder, products.id);
 
     return Response.json(rows.map(toClient));
   }
 
-  if (!isAuthorized(req)) return unauthorized();
+  /*
+   * Sve ostalo zahteva admin prijavu
+   */
+  if (!isAuthorized(req)) {
+    return unauthorized();
+  }
 
+  /*
+   * POST — novi proizvod
+   */
   if (req.method === "POST") {
     const body = await req.json();
 
-    const {
-      name,
-      price,
-      category,
-      sizes,
-      badge
-    } = body;
+    const name = String(body.name || "").trim();
+    const price = Number(body.price);
+    const category = String(body.category || "").trim();
+    const brand = String(body.brand || "").trim();
+    const stock = Math.max(0, Number(body.stock || 0));
+    const sortOrder = Number(body.sortOrder || 0);
+    const badge = String(body.badge || "").trim();
+
+    const sizes = Array.isArray(body.sizes)
+      ? body.sizes.map(String).join(",")
+      : String(body.sizes || "");
 
     const images = getImages(body);
 
-    if (!name || !price || !category || images.length === 0) {
+    if (
+      !name ||
+      !price ||
+      !category ||
+      images.length === 0
+    ) {
       return Response.json(
-        { error: "Missing required fields" },
+        {
+          error: "Missing required fields",
+        },
         { status: 400 }
       );
     }
@@ -80,20 +114,27 @@ export default async (
     const [row] = await db
       .insert(products)
       .values({
-        name: String(name),
-        price: Number(price),
-        category: String(category),
-        sizes: Array.isArray(sizes)
-          ? sizes.join(",")
-          : String(sizes || ""),
-        badge: String(badge || ""),
+        name,
+        price,
+        category,
+        brand,
+        stock,
+        sortOrder,
+        sizes,
+        badge,
         image: JSON.stringify(images),
       })
       .returning();
 
-    return Response.json(toClient(row), { status: 201 });
+    return Response.json(
+      toClient(row),
+      { status: 201 }
+    );
   }
 
+  /*
+   * PUT — izmena proizvoda
+   */
   if (req.method === "PUT") {
     if (!id) {
       return Response.json(
@@ -104,19 +145,30 @@ export default async (
 
     const body = await req.json();
 
-    const {
-      name,
-      price,
-      category,
-      sizes,
-      badge
-    } = body;
+    const name = String(body.name || "").trim();
+    const price = Number(body.price);
+    const category = String(body.category || "").trim();
+    const brand = String(body.brand || "").trim();
+    const stock = Math.max(0, Number(body.stock || 0));
+    const sortOrder = Number(body.sortOrder || 0);
+    const badge = String(body.badge || "").trim();
+
+    const sizes = Array.isArray(body.sizes)
+      ? body.sizes.map(String).join(",")
+      : String(body.sizes || "");
 
     const images = getImages(body);
 
-    if (!name || !price || !category || images.length === 0) {
+    if (
+      !name ||
+      !price ||
+      !category ||
+      images.length === 0
+    ) {
       return Response.json(
-        { error: "Missing required fields" },
+        {
+          error: "Missing required fields",
+        },
         { status: 400 }
       );
     }
@@ -124,13 +176,14 @@ export default async (
     const [row] = await db
       .update(products)
       .set({
-        name: String(name),
-        price: Number(price),
-        category: String(category),
-        sizes: Array.isArray(sizes)
-          ? sizes.join(",")
-          : String(sizes || ""),
-        badge: String(badge || ""),
+        name,
+        price,
+        category,
+        brand,
+        stock,
+        sortOrder,
+        sizes,
+        badge,
         image: JSON.stringify(images),
       })
       .where(eq(products.id, id))
@@ -146,6 +199,9 @@ export default async (
     return Response.json(toClient(row));
   }
 
+  /*
+   * DELETE — brisanje proizvoda
+   */
   if (req.method === "DELETE") {
     if (!id) {
       return Response.json(
@@ -158,14 +214,20 @@ export default async (
       .delete(products)
       .where(eq(products.id, id));
 
-    return new Response(null, { status: 204 });
+    return new Response(null, {
+      status: 204,
+    });
   }
 
-  return new Response("Method not allowed", {
-    status: 405
-  });
+  return new Response(
+    "Method not allowed",
+    { status: 405 }
+  );
 };
 
 export const config: Config = {
-  path: ["/api/products", "/api/products/:id"],
+  path: [
+    "/api/products",
+    "/api/products/:id",
+  ],
 };
