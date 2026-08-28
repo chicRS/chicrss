@@ -1,531 +1,2744 @@
 <!doctype html>
+
 <html lang="sr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chic.rs — Patike & Streetwear</title>
-<meta name="description" content="Chic.rs — online streetwear shop u Srbiji">
+
+<meta
+name=“description”
+content=“Chic.rs — online streetwear shop u Srbiji”
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="/style.css">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <div class="topbar">
-CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI · ZAMENA VELIČINE
+  CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI · ZAMENA VELIČINE
 </div>
-
 <header>
   <a class="logo" href="#home">
     <img src="/chic-logo.svg" alt="CHIC.RS">
   </a>
-
   <nav>
     <a href="#home">Početna</a>
     <a href="#shop">Shop</a>
     <a href="#about">O nama</a>
     <a href="#contact">Kontakt</a>
   </nav>
-
   <div class="head-actions">
-    <button type="button" onclick="openAdmin()">ADMIN</button>
-    <button type="button" onclick="openCart()">
-      KORPA <b id="cartCount">0</b>
-    </button>
+<button
+  type="button"
+  onclick="openAdmin()"
+>
+  ADMIN
+</button>
+<button
+  type="button"
+  onclick="openCart()"
+>
+  KORPA <b id="cartCount">0</b>
+</button>
   </div>
 </header>
-
 <main>
-
+<!-- =========================
+     HERO
+========================= -->
 <section class="hero" id="home">
   <div>
-    <p class="eyebrow">CHIC.RS / STREETWEAR</p>
-
-    <h1>
-      WEAR<br>
-      <span>YOUR</span><br>
-      ATTITUDE.
-    </h1>
-
-    <p class="desc">
-      Patike i garderoba za svakodnevni streetwear.
-      Izaberi model, veličinu i poruči online.
-    </p>
-
-    <a class="primary" href="#shop">
-      POGLEDAJ PONUDU ↗
-    </a>
+<p class="eyebrow">
+  CHIC.RS / STREETWEAR
+</p>
+<h1>
+  WEAR<br>
+  <span>YOUR</span><br>
+  ATTITUDE.
+</h1>
+<p class="desc">
+  Patike i garderoba za svakodnevni streetwear.
+  Izaberi model, veličinu i poruči online.
+</p>
+<a
+  class="primary"
+  href="#shop"
+>
+  POGLEDAJ PONUDU ↗
+</a>
   </div>
-
   <div class="hero-img">
-    <img src="/chic-logo.svg" class="main-logo" alt="Chic.rs">
+<img
+  src="/chic-logo.svg"
+  class="main-logo"
+  alt="Chic.rs"
+>
   </div>
 </section>
-
 <div class="ticker">
-CHIC.RS ★ SNEAKERS ★ STREETWEAR ★ ONLINE SHOP ★
-CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
+  CHIC.RS ★ SNEAKERS ★ STREETWEAR ★ ONLINE SHOP ★
+  CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 </div>
-
-<section class="section" id="shop">
-
+<!-- =========================
+     SHOP
+========================= -->
+<section
+  class="section"
+  id="shop"
+>
   <div class="section-head">
-    <div>
-      <p class="eyebrow">ONLINE PONUDA</p>
-      <h2>SHOP <span>/ CHIC.RS</span></h2>
-    </div>
-
-    <div class="tabs">
-      <button type="button" class="active" data-filter="all">SVE</button>
-      <button type="button" data-filter="patike">PATIKE</button>
-      <button type="button" data-filter="garderoba">GARDEROBA</button>
-    </div>
-  </div>
-
-  <div class="shop-tools">
-    <input id="search" placeholder="Pretraži proizvod ili brend…">
-
-    <select id="availability">
-      <option value="all">Svi proizvodi</option>
-      <option value="available">Dostupni</option>
-      <option value="sold">Rasprodati</option>
-    </select>
-
-    <select id="sort">
-      <option value="position">Pozicija</option>
-      <option value="new">Najnovije</option>
-      <option value="low">Najniža cena</option>
-      <option value="high">Najviša cena</option>
-    </select>
-  </div>
-
-  <div class="filter-row">
-    <input id="brandFilter" placeholder="Brend">
-    <input id="sizeFilter" placeholder="Veličina">
-    <input id="minPrice" type="number" placeholder="Min. cena">
-    <input id="maxPrice" type="number" placeholder="Max. cena">
-
-    <button type="button" onclick="resetFilters()">
-      RESET
-    </button>
-  </div>
-
-  <p class="muted" id="resultCount"></p>
-
-  <div class="grid" id="products">
-    <p class="muted">Učitavanje ponude...</p>
-  </div>
-
-</section>
-
-<section class="banner">
-
-  <div>
-    <p class="eyebrow">CHIC COMMUNITY</p>
-
-    <h2>
-      FOLLOW<br>
-      <span>@CHIC._RS</span>
-    </h2>
-  </div>
-
-  <a
-    class="secondary"
-    href="https://www.instagram.com/chic._rs/"
-    target="_blank"
-    rel="noopener"
+<div>
+  <p class="eyebrow">
+    ONLINE PONUDA
+  </p>
+  <h2>
+    SHOP <span>/ CHIC.RS</span>
+  </h2>
+</div>
+<div class="tabs">
+  <button
+    type="button"
+    class="active"
+    data-filter="all"
   >
-    INSTAGRAM ↗
-  </a>
-
+    SVE
+  </button>
+  <button
+    type="button"
+    data-filter="patike"
+  >
+    PATIKE
+  </button>
+  <button
+    type="button"
+    data-filter="garderoba"
+  >
+    GARDEROBA
+  </button>
+</div>
+  </div>
+  <div class="shop-tools">
+<input
+  id="search"
+  placeholder="Pretraži proizvod ili brend…"
+>
+<select id="availability">
+  <option value="all">
+    Svi proizvodi
+  </option>
+  <option value="available">
+    Dostupni
+  </option>
+  <option value="sold">
+    Rasprodati
+  </option>
+</select>
+<select id="sort">
+  <option value="position">
+    Pozicija
+  </option>
+  <option value="new">
+    Najnovije
+  </option>
+  <option value="low">
+    Najniža cena
+  </option>
+  <option value="high">
+    Najviša cena
+  </option>
+</select>
+  </div>
+  <div class="filter-row">
+<input
+  id="brandFilter"
+  placeholder="Brend"
+>
+<input
+  id="sizeFilter"
+  placeholder="Veličina"
+>
+<input
+  id="minPrice"
+  type="number"
+  placeholder="Min. cena"
+>
+<input
+  id="maxPrice"
+  type="number"
+  placeholder="Max. cena"
+>
+<button
+  type="button"
+  onclick="resetFilters()"
+>
+  RESET
+</button>
+  </div>
+  <p
+    class="muted"
+    id="resultCount"
+  ></p>
+  <div
+    class="grid"
+    id="products"
+  >
+<p class="muted">
+  Učitavanje ponude...
+</p>
+  </div>
 </section>
-
-<section class="two" id="about">
-
+<!-- =========================
+     BANNER
+========================= -->
+<section class="banner">
   <div>
-    <p class="eyebrow">O NAMA</p>
-
-    <h2>
-      URBAN.<br>
-      ČISTO.<br>
-      CHIC.
-    </h2>
+<p class="eyebrow">
+  CHIC COMMUNITY
+</p>
+<h2>
+  FOLLOW<br>
+  <span>@CHIC._RS</span>
+</h2>
   </div>
 
+<a
+class=“secondary”
+href=“https://www.instagram.com/chic._rs/”
+target=”_blank”
+rel=“noopener”
+
+INSTAGRAM ↗
+  </a>
+</section>
+<!-- =========================
+     ABOUT
+========================= -->
+<section
+  class="two"
+  id="about"
+>
+  <div>
+<p class="eyebrow">
+  O NAMA
+</p>
+<h2>
+  URBAN.<br>
+  ČISTO.<br>
+  CHIC.
+</h2>
+  </div>
   <p>
     Chic.rs je online streetwear shop za patike i garderobu.
     Izaberi proizvod, veličinu i poruči direktno preko sajta.
   </p>
-
 </section>
-
-<section class="two contact" id="contact">
-
+<!-- =========================
+     CONTACT
+========================= -->
+<section
+  class="two contact"
+  id="contact"
+>
   <div>
-    <p class="eyebrow">KONTAKT</p>
-
-    <h2>
-      IMAŠ<br>
-      PITANJE?
-    </h2>
+<p class="eyebrow">
+  KONTAKT
+</p>
+<h2>
+  IMAŠ<br>
+  PITANJE?
+</h2>
   </div>
-
   <div>
-
-    <a
-      class="ig"
-      href="https://www.instagram.com/chic._rs/"
-      target="_blank"
-      rel="noopener"
-    >
-      @chic._rs ↗
-    </a>
-
-    <p>
-      Za pitanja o modelima, veličinama i dostupnosti
-      piši nam na Instagramu.
-    </p>
-
+<a
+  class="ig"
+  href="https://www.instagram.com/chic._rs/"
+  target="_blank"
+  rel="noopener"
+>
+  @chic._rs ↗
+</a>
+<p>
+  Za pitanja o modelima, veličinama i dostupnosti
+  piši nam na Instagramu.
+</p>
   </div>
-
 </section>
-
 </main>
-
+<!-- =========================
+     FOOTER
+========================= -->
 <footer>
 
-  <a class="logo small-logo" href="#home">
-    <img src="/chic-logo.svg" alt="CHIC.RS">
-  </a>
+<a
+class=“logo small-logo”
+href=”#home”
 
+<img
+  src="/chic-logo.svg"
+  alt="CHIC.RS"
+>
+  </a>
   <span>
     © 2026 Chic.rs · @chic._rs
   </span>
-
 </footer>
-
-
-<!-- PRODUCT MODAL -->
-
+<!-- =========================
+     PRODUCT MODAL
+========================= -->
 <div
   class="modal"
   id="productModal"
   onclick="if(event.target===this)closeProduct()"
 >
-
   <div class="product-detail">
-
-    <button
-      type="button"
-      class="close"
-      onclick="closeProduct()"
-    >
-      ×
-    </button>
-
-    <div class="detail-photo">
-
-      <img id="detailImage" alt="">
-
-      <button
-        type="button"
-        class="gallery-arrow prev"
-        onclick="changeDetail(-1)"
-      >
-        ‹
-      </button>
-
-      <button
-        type="button"
-        class="gallery-arrow next"
-        onclick="changeDetail(1)"
-      >
-        ›
-      </button>
-
-      <div
-        class="gallery-counter"
-        id="detailCounter"
-      ></div>
-
-      <div
-        class="detail-thumbs"
-        id="detailThumbs"
-      ></div>
-
-    </div>
-
-    <div class="detail-copy">
-
-      <p
-        class="eyebrow"
-        id="detailBrand"
-      ></p>
-
-      <h2 id="detailName"></h2>
-
-      <p
-        class="muted"
-        id="detailDesc"
-      ></p>
-
-      <h3 id="detailPrice"></h3>
-
-      <p id="detailStock"></p>
-
-      <div class="ship">
-        Dostava 680 RSD.
-      </div>
-
-      <h4>
-        Izaberi veličinu
-      </h4>
-
-      <div
-        class="sizes"
-        id="detailSizes"
-      ></div>
-
-      <button
-        type="button"
-        class="primary full"
-        id="detailAdd"
-      >
-        DODAJ U KORPU →
-      </button>
-
-      <small>
-        Moguća je zamena veličine uz prethodni dogovor.
-      </small>
-
-    </div>
-
-  </div>
-
+<button
+  type="button"
+  class="close"
+  onclick="closeProduct()"
+>
+  ×
+</button>
+<div class="detail-photo">
+  <img
+    id="detailImage"
+    alt=""
+  >
+  <button
+    type="button"
+    class="gallery-arrow prev"
+    onclick="changeDetail(-1)"
+  >
+    ‹
+  </button>
+  <button
+    type="button"
+    class="gallery-arrow next"
+    onclick="changeDetail(1)"
+  >
+    ›
+  </button>
+  <div
+    class="gallery-counter"
+    id="detailCounter"
+  ></div>
+  <div
+    class="detail-thumbs"
+    id="detailThumbs"
+  ></div>
 </div>
-
-
-<!-- CART -->
-
+<div class="detail-copy">
+  <p
+    class="eyebrow"
+    id="detailBrand"
+  ></p>
+  <h2 id="detailName"></h2>
+  <p
+    class="muted"
+    id="detailDesc"
+  ></p>
+  <h3 id="detailPrice"></h3>
+  <p id="detailStock"></p>
+  <div class="ship">
+    Dostava 680 RSD.
+  </div>
+  <h4>
+    Izaberi veličinu
+  </h4>
+  <div
+    class="sizes"
+    id="detailSizes"
+  ></div>
+  <button
+    type="button"
+    class="primary full"
+    id="detailAdd"
+  >
+    DODAJ U KORPU →
+  </button>
+  <small>
+    Moguća je zamena veličine uz prethodni dogovor.
+  </small>
+</div>
+  </div>
+</div>
+<!-- =========================
+     CART
+========================= -->
 <div
   class="modal"
   id="cartModal"
   onclick="if(event.target===this)closeCart()"
 >
-
   <aside class="drawer">
-
-    <button
-      type="button"
-      class="close"
-      onclick="closeCart()"
-    >
-      ×
-    </button>
-
-    <p class="eyebrow">
-      TVOJA KUPOVINA
-    </p>
-
-    <h2>
-      KORPA
-    </h2>
-
-    <div id="cartItems"></div>
-
-    <div class="summary">
-
-      <span>MEĐUZBIR</span>
-      <b id="sub">0 RSD</b>
-
-      <span>DOSTAVA</span>
-      <b>680 RSD</b>
-
-      <strong>UKUPNO</strong>
-      <strong id="total">
-        680 RSD
-      </strong>
-
-    </div>
-
-    <button
-      type="button"
-      class="primary full"
-      onclick="checkout()"
-    >
-      NASTAVI NA PORUDŽBINU →
-    </button>
-
-  </aside>
-
+<button
+  type="button"
+  class="close"
+  onclick="closeCart()"
+>
+  ×
+</button>
+<p class="eyebrow">
+  TVOJA KUPOVINA
+</p>
+<h2>
+  KORPA
+</h2>
+<div id="cartItems"></div>
+<div class="summary">
+  <span>
+    MEĐUZBIR
+  </span>
+  <b id="sub">
+    0 RSD
+  </b>
+  <span>
+    DOSTAVA
+  </span>
+  <b>
+    680 RSD
+  </b>
+  <strong>
+    UKUPNO
+  </strong>
+  <strong id="total">
+    680 RSD
+  </strong>
 </div>
-
-
-<!-- CHECKOUT -->
-
+<button
+  type="button"
+  class="primary full"
+  onclick="checkout()"
+>
+  NASTAVI NA PORUDŽBINU →
+</button>
+  </aside>
+</div>
+<!-- =========================
+     CHECKOUT
+========================= -->
 <div
   class="modal"
   id="checkoutModal"
   onclick="if(event.target===this)closeCheckout()"
 >
-
   <div class="checkout">
-
+<button
+  type="button"
+  class="close"
+  onclick="closeCheckout()"
+>
+  ×
+</button>
+<p class="eyebrow">
+  CHIC.RS / CHECKOUT
+</p>
+<h2>
+  PORUČIVANJE
+</h2>
+<div id="preview"></div>
+<!-- NETLIFY FORM -->
+<form
+  name="chic-orders"
+  method="POST"
+  action="/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  id="orderForm"
+>
+  <input
+    type="hidden"
+    name="form-name"
+    value="chic-orders"
+  >
+  <p hidden>
+    <label>
+      Ne popunjavati:
+      <input
+        name="bot-field"
+      >
+    </label>
+  </p>
+  <input
+    type="hidden"
+    name="porudzbina"
+    id="order"
+  >
+  <input
+    type="hidden"
+    name="ukupno"
+    id="amount"
+  >
+  <div class="row">
+    <label>
+      Ime i prezime
+      <input
+        name="ime_prezime"
+        autocomplete="name"
+        required
+      >
+    </label>
+    <label>
+      Telefon
+      <input
+        name="telefon"
+        type="tel"
+        autocomplete="tel"
+        required
+      >
+    </label>
+  </div>
+  <div class="row">
+    <label>
+      Grad
+      <input
+        name="grad"
+        autocomplete="address-level2"
+        required
+      >
+    </label>
+    <label>
+      Poštanski broj
+      <input
+        name="postanski_broj"
+        inputmode="numeric"
+        autocomplete="postal-code"
+        required
+      >
+    </label>
+  </div>
+  <label>
+    Adresa i broj
+    <input
+      name="adresa"
+      autocomplete="street-address"
+      required
+    >
+  </label>
+  <label>
+    Napomena
+    <textarea
+      name="napomena"
+    ></textarea>
+  </label>
+  <div class="payment">
+    <b>
+      PLAĆANJE: POUZEĆEM
+    </b>
+    <small>
+      Kupac plaća prilikom preuzimanja.
+    </small>
+  </div>
+  <label class="agree">
+    <input
+      type="checkbox"
+      name="saglasnost"
+      value="da"
+      required
+    >
+    Slažem se sa obradom podataka
+    za obradu porudžbine.
+  </label>
+  <button
+    type="submit"
+    id="submitOrder"
+    class="primary full"
+  >
+    POŠALJI PORUDŽBINU →
+  </button>
+</form>
+  </div>
+</div>
+<!-- =========================
+     LOGIN
+========================= -->
+<div
+  class="modal"
+  id="loginModal"
+  onclick="if(event.target===this)closeLogin()"
+>
+  <div class="admin-login">
+<button
+  type="button"
+  class="close"
+  onclick="closeLogin()"
+>
+  ×
+</button>
+<p class="eyebrow">
+  CHIC.RS / ADMIN
+</p>
+<h2>
+  ULAZ
+</h2>
+<p class="muted">
+  Dodavanje i uređivanje proizvoda.
+</p>
+<input
+  id="adminPassword"
+  type="password"
+  placeholder="Admin lozinka"
+  onkeydown="if(event.key==='Enter')loginAdmin()"
+>
+<button
+  type="button"
+  class="primary full"
+  onclick="loginAdmin()"
+>
+  UĐI U ADMIN
+</button>
+<small id="loginError"></small>
+  </div>
+</div>
+<!-- =========================
+     ADMIN
+========================= -->
+<div
+  class="modal"
+  id="adminModal"
+  onclick="if(event.target===this)closeAdminPanel()"
+>
+  <div class="admin-panel">
+<div class="admin-top">
+  <div>
+    <p class="eyebrow">
+      CHIC.RS / ADMIN
+    </p>
+    <h2>
+      PROIZVODI
+    </h2>
+  </div>
+  <div class="admin-actions">
     <button
       type="button"
-      class="close"
-      onclick="closeCheckout()"
+      class="secondary"
+      onclick="logoutAdmin()"
+    >
+      ODJAVA
+    </button>
+    <button
+      type="button"
+      class="primary"
+      onclick="newProduct()"
+    >
+      + NOVI PROIZVOD
+    </button>
+  </div>
+</div>
+<div
+  class="admin-stats"
+  id="adminStats"
+></div>
+<p class="notice">
+  Ovde možeš da dodaš cenu, veličine, kategoriju,
+  brend, dostupnost, broj komada, poziciju i više slika.
+</p>
+<div id="adminList"></div>
+<!-- EDITOR -->
+<div
+  class="admin-form"
+  id="editor"
+  hidden
+>
+  <button
+    type="button"
+    class="close"
+    onclick="hideEditor()"
+  >
+    ×
+  </button>
+  <p class="eyebrow">
+    UREĐIVANJE
+  </p>
+  <h3 id="editorTitle">
+    NOVI PROIZVOD
+  </h3>
+  <label>
+    Naziv proizvoda
+    <input id="pName">
+  </label>
+  <div class="row">
+    <label>
+      Cena (RSD)
+      <input
+        id="pPrice"
+        type="number"
+        min="1"
+      >
+    </label>
+    <label>
+      Kategorija
+      <select id="pCat">
+        <option value="patike">
+          Patike
+        </option>
+        <option value="garderoba">
+          Garderoba
+        </option>
+      </select>
+    </label>
+  </div>
+  <div class="row">
+    <label>
+      Brend
+      <input
+        id="pBrand"
+        placeholder="Nike, Adidas…"
+      >
+    </label>
+    <label>
+      Status
+      <select id="pStatus">
+        <option value="available">
+          DOSTUPNO
+        </option>
+        <option value="sold">
+          NEDOSTUPNO
+        </option>
+      </select>
+    </label>
+  </div>
+  <div class="row">
+    <label>
+      Količina
+      <input
+        id="pStock"
+        type="number"
+        min="0"
+        value="0"
+      >
+    </label>
+    <label>
+      Pozicija
+      <input
+        id="pOrder"
+        type="number"
+        min="1"
+        value="1"
+      >
+      <small>
+        1 = prvi
+      </small>
+    </label>
+  </div>
+  <label>
+    Opis proizvoda
+    <textarea id="pDesc"></textarea>
+  </label>
+  <label>
+    Oznaka
+    <input
+      id="pBadge"
+      placeholder="NEW / BESTSELLER / AKCIJA"
+    >
+  </label>
+  <label>
+    Veličine — odvoji zarezom
+    <input
+      id="pSizes"
+      placeholder="40,41,42,43,44,45"
+    >
+  </label>
+  <label>
+    Dodaj više slika
+    <input
+      id="pImageFile"
+      type="file"
+      accept="image/*"
+      multiple
+    >
+  </label>
+  <div class="file-note">
+    Možeš izabrati više slika odjednom.
+    ↑ ↓ menjaju redosled,
+    ★ postavlja glavnu,
+    × briše.
+  </div>
+  <div
+    id="imagePreview"
+    class="manage-images"
+  ></div>
+  <div
+    class="file-note"
+    id="imagePreviewNote"
+  ></div>
+  <div class="form-actions">
+    <button
+      type="button"
+      class="secondary"
+      onclick="hideEditor()"
+    >
+      OTKAŽI
+    </button>
+    <button
+      type="button"
+      class="primary"
+      id="saveProductButton"
+      onclick="saveProduct()"
+    >
+      SAČUVAJ PROIZVOD
+    </button>
+  </div>
+</div>
+  </div>
+</div>
+<script>
+/* =========================
+   GLOBAL
+========================= */
+const SHIPPING = 680;
+let products = [];
+let cart = [];
+try {
+  cart = JSON.parse(
+    localStorage.getItem("chicCart") || "[]"
+  );
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+} catch {
+  cart = [];
+}
+let filter = "all";
+let editId = null;
+let editorImages = [];
+let pendingFiles = [];
+let detailProduct = null;
+let detailIndex = 0;
+let selectedSize = "";
+const $ = id =>
+  document.getElementById(id);
+const money = n =>
+  new Intl.NumberFormat("sr-RS").format(
+    Number(n) || 0
+  ) + " RSD";
+const esc = value =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c])
+  );
+function getImages(product) {
+  if (
+    Array.isArray(product?.images) &&
+    product.images.length
+  ) {
+    return product.images
+      .filter(Boolean)
+      .map(String);
+  }
+  return product?.image
+    ? [String(product.image)]
+    : [];
+}
+/* =========================
+   LOAD PRODUCTS
+========================= */
+async function loadProducts() {
+  try {
+    const response =
+      await fetch(
+        "/api/products",
+        {
+          cache: "no-store"
+        }
+      );
+    if (!response.ok) {
+      throw new Error(
+        "HTTP " + response.status
+      );
+    }
+    const data =
+      await response.json();
+    products =
+      Array.isArray(data)
+        ? data
+        : [];
+  } catch (error) {
+    console.error(
+      "PRODUCTS LOAD ERROR:",
+      error
+    );
+    products = [];
+  }
+  renderProducts();
+  renderAdmin();
+  renderCart();
+}
+/* =========================
+   SHOP
+========================= */
+function renderProducts() {
+  const search =
+    (
+      $("search")?.value ||
+      ""
+    ).toLowerCase();
+  const brand =
+    (
+      $("brandFilter")?.value ||
+      ""
+    ).toLowerCase();
+  const size =
+    (
+      $("sizeFilter")?.value ||
+      ""
+    ).trim();
+  const minPrice =
+    Number(
+      $("minPrice")?.value
+    ) || 0;
+  const maxPrice =
+    Number(
+      $("maxPrice")?.value
+    ) || Infinity;
+  const availability =
+    $("availability")?.value ||
+    "all";
+  let list =
+    products.filter(
+      product => {
+        const productName =
+          String(
+            product.name || ""
+          ).toLowerCase();
+        const productBrand =
+          String(
+            product.brand || ""
+          ).toLowerCase();
+        const productSizes =
+          Array.isArray(product.sizes)
+            ? product.sizes.map(String)
+            : [];
+        const matchesCategory =
+          filter === "all" ||
+          product.category === filter;
+        const matchesSearch =
+          !search ||
+          productName.includes(search) ||
+          productBrand.includes(search);
+        const matchesBrand =
+          !brand ||
+          productBrand.includes(brand);
+        const matchesSize =
+          !size ||
+          productSizes.includes(size);
+        const price =
+          Number(product.price) || 0;
+        const matchesPrice =
+          price >= minPrice &&
+          price <= maxPrice;
+        const stock =
+          Number(product.stock) || 0;
+        const matchesAvailability =
+          availability === "all" ||
+          (
+            availability === "available" &&
+            stock > 0
+          ) ||
+          (
+            availability === "sold" &&
+            stock <= 0
+          );
+        return (
+          matchesCategory &&
+          matchesSearch &&
+          matchesBrand &&
+          matchesSize &&
+          matchesPrice &&
+          matchesAvailability
+        );
+      }
+    );
+  const sort =
+    $("sort")?.value ||
+    "position";
+  if (sort === "new") {
+    list.sort(
+      (a,b) =>
+        Number(b.id) -
+        Number(a.id)
+    );
+  }
+  if (sort === "low") {
+    list.sort(
+      (a,b) =>
+        Number(a.price) -
+        Number(b.price)
+    );
+  }
+  if (sort === "high") {
+    list.sort(
+      (a,b) =>
+        Number(b.price) -
+        Number(a.price)
+    );
+  }
+  if (sort === "position") {
+    list.sort(
+      (a,b) =>
+        (
+          Number(a.sortOrder || 1) -
+          Number(b.sortOrder || 1)
+        ) ||
+        (
+          Number(a.id) -
+          Number(b.id)
+        )
+    );
+  }
+  $("resultCount").textContent =
+    `${list.length} proizvoda`;
+  if (!list.length) {
+    $("products").innerHTML = `
+      <p class="muted">
+        Nema proizvoda za izabrane filtere.
+      </p>
+    `;
+    return;
+  }
+  $("products").innerHTML =
+    list.map(
+      product => {
+        const images =
+          getImages(product);
+        const sold =
+          Number(product.stock) <= 0;
+        const id =
+          Number(product.id);
+        return `
+<article
+  class="product"
+  onclick="openProduct(${id})"
+>
+  <div class="photo">
+    <img
+      src="${esc(
+        images[0] ||
+        "/chic-logo.svg"
+      )}"
+      alt="${esc(product.name)}"
+    >
+    ${
+      images.length > 1
+        ? `
+      <button
+        type="button"
+        class="card-prev"
+        onclick="
+          event.stopPropagation();
+          quickImage(${id},-1)
+        "
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        class="card-next"
+        onclick="
+          event.stopPropagation();
+          quickImage(${id},1)
+        "
+      >
+        ›
+      </button>
+      <span
+        class="card-count"
+        id="cc-${id}"
+      >
+        1 / ${images.length}
+      </span>
+        `
+        : ""
+    }
+    ${
+      product.badge
+        ? `
+      <span class="badge">
+        ${esc(product.badge)}
+      </span>
+        `
+        : ""
+    }
+    <em class="${sold ? "out" : ""}">
+      ${
+        sold
+          ? "RASPRODATO"
+          : "DOSTUPNO · " +
+            Number(product.stock) +
+            " KOM."
+      }
+    </em>
+  </div>
+  <div class="meta">
+    <div>
+      <h3>
+        ${esc(product.name)}
+      </h3>
+      <p>
+        ${esc(product.brand || "")}
+        ·
+        ${
+          product.category === "patike"
+            ? "Patike"
+            : "Garderoba"
+        }
+      </p>
+    </div>
+    <b>
+      ${money(product.price)}
+    </b>
+  </div>
+  <div class="sizes">
+    ${
+      (product.sizes || [])
+        .map(
+          size => `
+      <button
+        type="button"
+        onclick="
+          event.stopPropagation();
+          add(${id},'${esc(size)}')
+        "
+      >
+        ${esc(size)}
+      </button>
+          `
+        )
+        .join("")
+    }
+  </div>
+</article>
+`;
+      }
+    ).join("");
+}
+const quickIndexes = {};
+function quickImage(id, direction) {
+  const product =
+    products.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+  if (!product) return;
+  const images =
+    getImages(product);
+  if (!images.length) return;
+  quickIndexes[id] =
+    (
+      (
+        quickIndexes[id] ?? 0
+      ) +
+      direction +
+      images.length
+    ) %
+    images.length;
+  const cards =
+    document.querySelectorAll(
+      ".product"
+    );
+  let card = null;
+  cards.forEach(
+    candidate => {
+      const onclick =
+        candidate.getAttribute(
+          "onclick"
+        );
+      if (
+        onclick ===
+        `openProduct(${Number(id)})`
+      ) {
+        card = candidate;
+      }
+    }
+  );
+  if (card) {
+    const image =
+      card.querySelector(
+        ".photo img"
+      );
+    if (image) {
+      image.src =
+        images[
+          quickIndexes[id]
+        ];
+    }
+  }
+  const counter =
+    $("cc-" + id);
+  if (counter) {
+    counter.textContent =
+      `${quickIndexes[id] + 1} / ${images.length}`;
+  }
+}
+/* =========================
+   PRODUCT DETAIL
+========================= */
+function openProduct(id) {
+  detailProduct =
+    products.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+  if (!detailProduct) {
+    return;
+  }
+  detailIndex = 0;
+  selectedSize = "";
+  renderDetail();
+  $("productModal")
+    .classList.add("show");
+}
+function renderDetail() {
+  const product =
+    detailProduct;
+  if (!product) return;
+  const images =
+    getImages(product);
+  $("detailImage").src =
+    images[detailIndex] ||
+    "/chic-logo.svg";
+  $("detailCounter").textContent =
+    images.length
+      ? `${detailIndex + 1} / ${images.length}`
+      : "";
+  $("detailBrand").textContent =
+    product.brand ||
+    "CHIC.RS";
+  $("detailName").textContent =
+    product.name ||
+    "";
+  $("detailDesc").textContent =
+    product.description ||
+    "Premium streetwear model.";
+  $("detailPrice").textContent =
+    money(product.price);
+  const stock =
+    Number(product.stock) || 0;
+  $("detailStock").textContent =
+    stock > 0
+      ? `Dostupno: ${stock} kom.`
+      : "Rasprodato";
+  $("detailThumbs").innerHTML =
+    images
+      .map(
+        (src,index) => `
+<button
+  type="button"
+  class="${
+    index === detailIndex
+      ? "selected"
+      : ""
+  }"
+  onclick="
+    detailIndex=${index};
+    renderDetail()
+  "
+>
+  <img
+    src="${esc(src)}"
+    alt=""
+  >
+</button>
+`
+      )
+      .join("");
+  $("detailSizes").innerHTML =
+    (product.sizes || [])
+      .map(
+        size => `
+<button
+  type="button"
+  class="${
+    selectedSize ===
+    String(size)
+      ? "sel"
+      : ""
+  }"
+  onclick="
+    selectedSize='${esc(size)}';
+    renderDetail()
+  "
+>
+  ${esc(size)}
+</button>
+`
+      )
+      .join("");
+  $("detailAdd").disabled =
+    stock <= 0;
+  $("detailAdd").onclick =
+    () => {
+      if (stock <= 0) {
+        return;
+      }
+      const size =
+        selectedSize ||
+        (
+          product.sizes || []
+        )[0] ||
+        "";
+      add(
+        Number(product.id),
+        size
+      );
+      closeProduct();
+    };
+}
+function changeDetail(direction) {
+  const images =
+    getImages(detailProduct);
+  if (!images.length) {
+    return;
+  }
+  detailIndex =
+    (
+      detailIndex +
+      direction +
+      images.length
+    ) %
+    images.length;
+  renderDetail();
+}
+function closeProduct() {
+  $("productModal")
+    .classList.remove("show");
+}
+/* =========================
+   CART
+========================= */
+function add(id, size) {
+  const product =
+    products.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+  if (
+    !product ||
+    Number(product.stock) <= 0
+  ) {
+    alert(
+      "Proizvod trenutno nije dostupan."
+    );
+    return;
+  }
+  const chosenSize =
+    String(size || "");
+  const existing =
+    cart.find(
+      item =>
+        Number(item.id) ===
+          Number(id) &&
+        String(item.size) ===
+          chosenSize
+    );
+  if (existing) {
+    if (
+      Number(existing.qty) >=
+      Number(product.stock)
+    ) {
+      alert(
+        "Nema više komada."
+      );
+      return;
+    }
+    existing.qty =
+      Number(existing.qty) + 1;
+  } else {
+    cart.push({
+      id: Number(id),
+      size: chosenSize,
+      qty: 1
+    });
+  }
+  localStorage.setItem(
+    "chicCart",
+    JSON.stringify(cart)
+  );
+  renderCart();
+  openCart();
+}
+function renderCart() {
+  const count =
+    cart.reduce(
+      (sum,item) =>
+        sum +
+        Number(item.qty || 0),
+      0
+    );
+  $("cartCount").textContent =
+    count;
+  $("cartItems").innerHTML =
+    cart
+      .map(
+        (item,index) => {
+          const product =
+            products.find(
+              p =>
+                Number(p.id) ===
+                Number(item.id)
+            );
+          if (!product) {
+            return "";
+          }
+          return `
+<div class="cartrow">
+  <img
+    src="${esc(
+      getImages(product)[0] ||
+      "/chic-logo.svg"
+    )}"
+    alt=""
+  >
+  <div>
+    <b>
+      ${esc(product.name)}
+    </b>
+    <small>
+      Veličina ${esc(item.size)}
+      · ${Number(item.qty)} kom.
+    </small>
+  </div>
+  <strong>
+    ${money(
+      Number(product.price) *
+      Number(item.qty)
+    )}
+  </strong>
+  <button
+    type="button"
+    onclick="removeCart(${index})"
+  >
+    ×
+  </button>
+</div>
+`;
+        }
+      )
+      .join("");
+  if (!$("cartItems").innerHTML) {
+    $("cartItems").innerHTML = `
+      <p class="muted">
+        Korpa je prazna.
+      </p>
+    `;
+  }
+  const subtotal =
+    cart.reduce(
+      (sum,item) => {
+        const product =
+          products.find(
+            p =>
+              Number(p.id) ===
+              Number(item.id)
+          );
+        if (!product) {
+          return sum;
+        }
+        return (
+          sum +
+          Number(product.price) *
+          Number(item.qty)
+        );
+      },
+      0
+    );
+  $("sub").textContent =
+    money(subtotal);
+  const total =
+    subtotal +
+    (
+      cart.length
+        ? SHIPPING
+        : 0
+    );
+  $("total").textContent =
+    money(total);
+}
+function removeCart(index) {
+  cart.splice(index,1);
+  localStorage.setItem(
+    "chicCart",
+    JSON.stringify(cart)
+  );
+  renderCart();
+}
+function openCart() {
+  $("cartModal")
+    .classList.add("show");
+  renderCart();
+}
+function closeCart() {
+  $("cartModal")
+    .classList.remove("show");
+}
+/* =========================
+   CHECKOUT
+========================= */
+function checkout() {
+  if (!cart.length) {
+    alert(
+      "Korpa je prazna."
+    );
+    return;
+  }
+  closeCart();
+  const subtotal =
+    cart.reduce(
+      (sum,item) => {
+        const product =
+          products.find(
+            p =>
+              Number(p.id) ===
+              Number(item.id)
+          );
+        return product
+          ? sum +
+            Number(product.price) *
+            Number(item.qty)
+          : sum;
+      },
+      0
+    );
+  const total =
+    subtotal +
+    SHIPPING;
+  $("preview").innerHTML =
+    cart
+      .map(
+        item => {
+          const product =
+            products.find(
+              p =>
+                Number(p.id) ===
+                Number(item.id)
+            );
+          if (!product) {
+            return "";
+          }
+          return `
+<div class="previewrow">
+  <span>
+    ${esc(product.name)}
+    · veličina ${esc(item.size)}
+    × ${Number(item.qty)}
+  </span>
+  <b>
+    ${money(
+      Number(product.price) *
+      Number(item.qty)
+    )}
+  </b>
+</div>
+`;
+        }
+      )
+      .join("")
+    +
+    `
+<div class="previewrow">
+  <span>
+    DOSTAVA
+  </span>
+  <b>
+    ${money(SHIPPING)}
+  </b>
+</div>
+<div class="previewrow totalrow">
+  <span>
+    UKUPNO
+  </span>
+  <b>
+    ${money(total)}
+  </b>
+</div>
+`;
+  $("order").value =
+    cart
+      .map(
+        item => {
+          const product =
+            products.find(
+              p =>
+                Number(p.id) ===
+                Number(item.id)
+            );
+          if (!product) {
+            return "";
+          }
+          return (
+            `${product.name} | ` +
+            `veličina ${item.size} | ` +
+            `količina ${Number(item.qty)} | ` +
+            `${money(
+              Number(product.price) *
+              Number(item.qty)
+            )}`
+          );
+        }
+      )
+      .filter(Boolean)
+      .join(" || ");
+  $("amount").value =
+    money(total);
+  $("checkoutModal")
+    .classList.add("show");
+}
+function closeCheckout() {
+  $("checkoutModal")
+    .classList.remove("show");
+}
+/* =========================
+   NETLIFY FORMS
+========================= */
+const orderForm =
+  $("orderForm");
+if (orderForm) {
+  orderForm.addEventListener(
+    "submit",
+    async event => {
+      event.preventDefault();
+      if (
+        !orderForm.reportValidity()
+      ) {
+        return;
+      }
+      const button =
+        $("submitOrder");
+      if (button) {
+        button.disabled = true;
+        button.textContent =
+          "SLANJE PORUDŽBINE...";
+      }
+      try {
+        const formData =
+          new FormData(
+            orderForm
+          );
+        const encoded =
+          new URLSearchParams();
+        encoded.append(
+          "form-name",
+          "chic-orders"
+        );
+        for (
+          const [
+            key,
+            value
+          ]
+          of formData.entries()
+        ) {
+          encoded.append(
+            key,
+            String(value)
+          );
+        }
+        const response =
+          await fetch(
+            "/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded"
+              },
+              body:
+                encoded.toString()
+            }
+          );
+        if (!response.ok) {
+          throw new Error(
+            "HTTP " +
+            response.status
+          );
+        }
+        alert(
+          "Porudžbina je uspešno poslata! Hvala na kupovini."
+        );
+        cart = [];
+        localStorage.removeItem(
+          "chicCart"
+        );
+        renderCart();
+        orderForm.reset();
+        closeCheckout();
+      } catch (error) {
+        console.error(
+          "ORDER ERROR:",
+          error
+        );
+        alert(
+          "Greška pri slanju porudžbine. Proveri Netlify Forms podešavanje i pokušaj ponovo."
+        );
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent =
+            "POŠALJI PORUDŽBINU →";
+        }
+      }
+    }
+  );
+}
+/* =========================
+   FILTERS
+========================= */
+function resetFilters() {
+  $("search").value = "";
+  $("brandFilter").value = "";
+  $("sizeFilter").value = "";
+  $("minPrice").value = "";
+  $("maxPrice").value = "";
+  $("availability").value =
+    "all";
+  $("sort").value =
+    "position";
+  filter = "all";
+  document
+    .querySelectorAll(
+      ".tabs button"
+    )
+    .forEach(
+      button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.filter ===
+          "all"
+        );
+      }
+    );
+  renderProducts();
+}
+/* =========================
+   ADMIN LOGIN
+========================= */
+function openAdmin() {
+  $("loginError").textContent =
+    "";
+  $("adminPassword").value =
+    "";
+  $("loginModal")
+    .classList.add("show");
+  setTimeout(
+    () =>
+      $("adminPassword").focus(),
+    50
+  );
+}
+function closeLogin() {
+  $("loginModal")
+    .classList.remove("show");
+}
+function closeAdminPanel() {
+  $("adminModal")
+    .classList.remove("show");
+}
+async function loginAdmin() {
+  try {
+    const password =
+      $("adminPassword").value;
+    if (!password) {
+      $("loginError").textContent =
+        "Unesi lozinku.";
+      return;
+    }
+    const response =
+      await fetch(
+        "/api/admin/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          credentials:
+            "same-origin",
+          body:
+            JSON.stringify({
+              password
+            })
+        }
+      );
+    if (!response.ok) {
+      $("loginError").textContent =
+        "Pogrešna lozinka.";
+      return;
+    }
+    closeLogin();
+    $("adminModal")
+      .classList.add("show");
+    renderAdmin();
+  } catch (error) {
+    console.error(
+      "LOGIN ERROR:",
+      error
+    );
+    $("loginError").textContent =
+      "Greška pri prijavljivanju.";
+  }
+}
+async function logoutAdmin() {
+  try {
+    await fetch(
+      "/api/admin/logout",
+      {
+        method: "POST",
+        credentials: "same-origin"
+      }
+    );
+  } catch (error) {
+    console.error(
+      "LOGOUT ERROR:",
+      error
+    );
+  }
+  closeAdminPanel();
+}
+/* =========================
+   ADMIN LIST
+========================= */
+function renderAdmin() {
+  if (
+    !$("adminStats") ||
+    !$("adminList")
+  ) {
+    return;
+  }
+  const totalStock =
+    products.reduce(
+      (sum,product) =>
+        sum +
+        Number(
+          product.stock || 0
+        ),
+      0
+    );
+  $("adminStats").innerHTML = `
+<b>
+  ${products.length}
+</b>
+<span>
+  proizvoda
+</span>
+<b>
+  ${totalStock}
+</b>
+<span>
+  komada
+</span>
+`;
+  const list =
+    [...products].sort(
+      (a,b) =>
+        (
+          Number(
+            a.sortOrder || 1
+          ) -
+          Number(
+            b.sortOrder || 1
+          )
+        ) ||
+        (
+          Number(a.id) -
+          Number(b.id)
+        )
+    );
+  $("adminList").innerHTML =
+    list
+      .map(
+        product => {
+          const id =
+            Number(product.id);
+          return `
+<div class="admin-item">
+  <img
+    src="${esc(
+      getImages(product)[0] ||
+      "/chic-logo.svg"
+    )}"
+    alt=""
+  >
+  <div>
+    <b>
+      ${esc(product.name)}
+    </b>
+    <small>
+      ${money(product.price)}
+      ·
+      ${esc(
+        product.brand ||
+        "Bez brenda"
+      )}
+      ·
+      ${esc(product.category)}
+      ·
+      ${Number(product.stock || 0)}
+      kom.
+      ·
+      pozicija
+      ${Number(
+        product.sortOrder || 1
+      )}
+      ·
+      ${getImages(product).length}
+      slika
+    </small>
+  </div>
+  <div class="admin-buttons">
+    <button
+      type="button"
+      onclick="moveProduct(${id},-1)"
+    >
+      ↑
+    </button>
+    <button
+      type="button"
+      onclick="moveProduct(${id},1)"
+    >
+      ↓
+    </button>
+    <button
+      type="button"
+      onclick="editProduct(${id})"
+    >
+      UREDI
+    </button>
+    <button
+      type="button"
+      class="danger"
+      onclick="deleteProduct(${id})"
+    >
+      OBRIŠI
+    </button>
+  </div>
+</div>
+`;
+        }
+      )
+      .join("");
+  if (!$("adminList").innerHTML) {
+    $("adminList").innerHTML = `
+      <p class="muted">
+        Još nema proizvoda.
+      </p>
+    `;
+  }
+}
+/* =========================
+   NEW PRODUCT
+========================= */
+function newProduct() {
+  editId = null;
+  editorImages = [];
+  pendingFiles = [];
+  $("editor").hidden = false;
+  $("editorTitle").textContent =
+    "NOVI PROIZVOD";
+  [
+    "pName",
+    "pPrice",
+    "pBrand",
+    "pBadge",
+    "pSizes",
+    "pDesc"
+  ].forEach(
+    id => {
+      $(id).value = "";
+    }
+  );
+  $("pCat").value =
+    "patike";
+  $("pStatus").value =
+    "available";
+  $("pStock").value =
+    0;
+  $("pOrder").value =
+    products.length + 1;
+  $("pImageFile").value =
+    "";
+  $("imagePreviewNote").textContent =
+    "";
+  renderImageManager();
+}
+/* =========================
+   EDIT PRODUCT
+========================= */
+function editProduct(id) {
+  const product =
+    products.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+  if (!product) {
+    alert(
+      "Proizvod nije pronađen."
+    );
+    return;
+  }
+  const numericId =
+    Number(product.id);
+  if (
+    !Number.isInteger(numericId) ||
+    numericId <= 0
+  ) {
+    alert(
+      "Proizvod nema ispravan ID."
+    );
+    return;
+  }
+  editId =
+    numericId;
+  editorImages =
+    [
+      ...getImages(product)
+    ];
+  pendingFiles = [];
+  $("editor").hidden = false;
+  $("editorTitle").textContent =
+    "UREDI PROIZVOD";
+  $("pName").value =
+    product.name || "";
+  $("pPrice").value =
+    product.price || "";
+  $("pCat").value =
+    product.category ||
+    "patike";
+  $("pBrand").value =
+    product.brand || "";
+  $("pStatus").value =
+    Number(product.stock) > 0
+      ? "available"
+      : "sold";
+  $("pStock").value =
+    Number(
+      product.stock || 0
+    );
+  $("pDesc").value =
+    product.description || "";
+  $("pOrder").value =
+    Number(
+      product.sortOrder || 1
+    );
+  $("pSizes").value =
+    (
+      product.sizes || []
+    ).join(",");
+  $("pBadge").value =
+    product.badge || "";
+  $("pImageFile").value =
+    "";
+  $("imagePreviewNote").textContent =
+    "";
+  renderImageManager();
+}
+/* =========================
+   HIDE EDITOR
+========================= */
+function hideEditor() {
+  $("editor").hidden = true;
+  editId = null;
+  editorImages = [];
+  pendingFiles = [];
+}
+/* =========================
+   IMAGE FILES
+========================= */
+$("pImageFile")
+  .addEventListener(
+    "change",
+    event => {
+      pendingFiles = [];
+      const files =
+        [
+          ...event.target.files
+        ];
+      if (!files.length) {
+        $("imagePreviewNote")
+          .textContent = "";
+        return;
+      }
+      let loaded = 0;
+      files.forEach(
+        file => {
+          const reader =
+            new FileReader();
+          reader.onload =
+            () => {
+              const result =
+                String(
+                  reader.result
+                );
+              const comma =
+                result.indexOf(",");
+              const base64 =
+                comma >= 0
+                  ? result.slice(
+                      comma + 1
+                    )
+                  : result;
+              pendingFiles.push({
+                file,
+                data:
+                  base64
+              });
+              loaded++;
+              $("imagePreviewNote")
+                .textContent =
+                  `${loaded} novih slika spremno.`;
+            };
+          reader.onerror =
+            () => {
+              console.error(
+                "Greška pri čitanju slike:",
+                file.name
+              );
+            };
+          reader.readAsDataURL(
+            file
+          );
+        }
+      );
+    }
+  );
+/* =========================
+   IMAGE MANAGER
+========================= */
+function renderImageManager() {
+  const container =
+    $("imagePreview");
+  if (!container) {
+    return;
+  }
+  container.innerHTML =
+    editorImages
+      .map(
+        (src,index) => `
+<div class="managed-image">
+  <img
+    src="${esc(src)}"
+    alt=""
+  >
+  <div>
+    <b>
+      Slika ${index + 1}
+      ${
+        index === 0
+          ? " · GLAVNA"
+          : ""
+      }
+    </b>
+    <button
+      type="button"
+      onclick="imageUp(${index})"
+    >
+      ↑
+    </button>
+    <button
+      type="button"
+      onclick="imageDown(${index})"
+    >
+      ↓
+    </button>
+    <button
+      type="button"
+      onclick="setMainImage(${index})"
+    >
+      ★
+    </button>
+    <button
+      type="button"
+      class="danger"
+      onclick="removeImage(${index})"
     >
       ×
     </button>
-
-    <p class="eyebrow">
-      CHIC.RS / CHECKOUT
-    </p>
-
-    <h2>
-      PORUČIVANJE
-    </h2>
-
-    <div id="preview"></div>
-
-    <form
-      name="chic-orders"
-      method="POST"
-      action="/"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      id="orderForm"
-    >
-
-      <input
-        type="hidden"
-        name="form-name"
-        value="chic-orders"
-      >
-
-      <p hidden>
-        <label>
-          Ne popunjavati:
-          <input name="bot-field">
-        </label>
-      </p>
-
-      <input
-        type="hidden"
-        name="porudzbina"
-        id="order"
-      >
-
-      <input
-        type="hidden"
-        name="ukupno"
-        id="amount"
-      >
-
-      <div class="row">
-
-        <label>
-          Ime i prezime
-          <input
-            name="ime_prezime"
-            autocomplete="name"
-            required
-          >
-        </label>
-
-        <label>
-          Telefon
-          <input
-            name="telefon"
-            type="tel"
-            autocomplete="tel"
-            required
-          >
-        </label>
-
-      </div>
-
-      <div class="row">
-
-        <label>
-          Grad
-          <input
-            name="grad"
-            autocomplete="address-level2"
-            required
-          >
-        </label>
-
-        <label>
-          Poštanski broj
-          <input
-            name="postanski_broj"
-            inputmode="numeric"
-            autocomplete="postal-code"
-            required
-          >
-        </label>
-
-      </div>
-
-      <label>
-        Adresa i broj
-        <input
-          name="adresa"
-          autocomplete="street-address"
-          required
-        >
-      </label>
-
-      <label>
-        Napomena
-        <textarea name="napomena"></textarea>
-      </label>
-
-      <div class="payment">
-
-        <b>
-          PLAĆANJE: POUZEĆEM
-        </b>
-
-        <small>
-          Kupac plaća prilikom preuzimanja.
-        </small>
-
-      </div>
-
-      <label class="agree">
-
-        <input
-          type="checkbox"
-          name="saglasnost"
-          value="da"
-          required
-        >
-
-        Slažem se sa obradom podataka
-        za obradu porudžbine.
-
-      </label>
-
-      <button
-        type="submit"
-        id="submitOrder"
-        class="primary full"
-      >
-        POŠALJI PORUDŽBINU →
-      </button>
-
-    </form>
-
   </div>
-
 </div>
-
-
-<!--
+`
+      )
+      .join("");
+}
+function imageUp(index) {
+  if (index <= 0) {
+    return;
+  }
+  [
+    editorImages[index - 1],
+    editorImages[index]
+  ] =
+  [
+    editorImages[index],
+    editorImages[index - 1]
+  ];
+  renderImageManager();
+}
+function imageDown(index) {
+  if (
+    index >=
+    editorImages.length - 1
+  ) {
+    return;
+  }
+  [
+    editorImages[index],
+    editorImages[index + 1]
+  ] =
+  [
+    editorImages[index + 1],
+    editorImages[index]
+  ];
+  renderImageManager();
+}
+function setMainImage(index) {
+  if (
+    index < 0 ||
+    index >= editorImages.length
+  ) {
+    return;
+  }
+  const image =
+    editorImages.splice(
+      index,
+      1
+    )[0];
+  editorImages.unshift(
+    image
+  );
+  renderImageManager();
+}
+function removeImage(index) {
+  if (
+    index < 0 ||
+    index >= editorImages.length
+  ) {
+    return;
+  }
+  editorImages.splice(
+    index,
+    1
+  );
+  renderImageManager();
+}
+/* =========================
+   ADMIN API REQUEST
+========================= */
+async function adminRequest(
+  url,
+  options = {}
+) {
+  const response =
+    await fetch(
+      url,
+      {
+        credentials:
+          "same-origin",
+        ...options
+      }
+    );
+  let data = null;
+  try {
+    data =
+      await response.json();
+  } catch {
+    data = null;
+  }
+  if (!response.ok) {
+    throw new Error(
+      data?.error ||
+      data?.message ||
+      `HTTP ${response.status}`
+    );
+  }
+  return data;
+}
+/* =========================
+   SAVE PRODUCT
+========================= */
+async function saveProduct() {
+  const name =
+    $("pName").value.trim();
+  const price =
+    Number(
+      $("pPrice").value
+    );
+  const category =
+    $("pCat").value;
+  const brand =
+    $("pBrand").value.trim();
+  const status =
+    $("pStatus").value;
+  let stock =
+    Math.max(
+      0,
+      Number(
+        $("pStock").value
+      ) || 0
+    );
+  if (
+    status === "sold"
+  ) {
+    stock = 0;
+  }
+  const sortOrder =
+    Math.max(
+      1,
+      Number(
+        $("pOrder").value
+      ) || 1
+    );
+  const description =
+    $("pDesc").value.trim();
+  const badge =
+    $("pBadge").value.trim();
+  const sizes =
+    $("pSizes").value
+      .split(",")
+      .map(
+        value =>
+          value.trim()
+      )
+      .filter(Boolean);
+  if (!name) {
+    alert(
+      "Unesi naziv proizvoda."
+    );
+    return;
+  }
+  if (
+    !Number.isFinite(price) ||
+    price <= 0
+  ) {
+    alert(
+      "Unesi ispravnu cenu."
+    );
+    return;
+  }
+  if (!category) {
+    alert(
+      "Izaberi kategoriju."
+    );
+    return;
+  }
+  /*
+    Ako je novi proizvod,
+    mora imati barem jednu sliku.
+    Ako se uređuje postojeći proizvod,
+    postojeće slike mogu ostati.
+  */
+  if (
+    editId === null &&
+    editorImages.length === 0 &&
+    pendingFiles.length === 0
+  ) {
+    alert(
+      "Dodaj najmanje jednu sliku proizvoda."
+    );
+    return;
+  }
+  const button =
+    $("saveProductButton");
+  if (button) {
+    button.disabled = true;
+    button.textContent =
+      "ČUVANJE...";
+  }
+  try {
+    const uploadedImages =
+      pendingFiles.map(
+        item => ({
+          name:
+            item.file.name,
+          type:
+            item.file.type ||
+            "image/jpeg",
+          data:
+            item.data
+        })
+      );
+    /*
+      VAŽNO:
+      POST:
+      /api/products
+      PUT:
+      /api/products/:id
+    */
+    const apiUrl =
+      editId !== null
+        ? `/api/products/${encodeURIComponent(
+            editId
+          )}`
+        : "/api/products";
+    const payload = {
+      name,
+      price,
+      category,
+      brand,
+      stock,
+      sortOrder,
+      description,
+      badge,
+      sizes,
+      images:
+        editorImages,
+      newImages:
+        uploadedImages
+    };
+    const saved =
+      await adminRequest(
+        apiUrl,
+        {
+          method:
+            editId !== null
+              ? "PUT"
+              : "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify(
+              payload
+            )
+        }
+      );
+    /*
+      products.mts vraća direktno
+      Product objekat.
+    */
+    if (saved) {
+      const savedId =
+        Number(saved.id);
+      const existingIndex =
+        products.findIndex(
+          product =>
+            Number(product.id) ===
+            savedId
+        );
+      if (existingIndex >= 0) {
+        products[
+          existingIndex
+        ] = saved;
+      } else {
+        products.push(
+          saved
+        );
+      }
+    }
+    hideEditor();
+    renderProducts();
+    renderAdmin();
+    renderCart();
+    alert(
+      "Proizvod je uspešno sačuvan."
+    );
+  } catch (error) {
+    console.error(
+      "SAVE PRODUCT ERROR:",
+      error
+    );
+    alert(
+      "Greška pri čuvanju proizvoda: " +
+      (
+        error?.message ||
+        "Pokušaj ponovo."
+      )
+    );
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent =
+        "SAČUVAJ PROIZVOD";
+    }
+  }
+}
+/* =========================
+   DELETE PRODUCT
+========================= */
+async function deleteProduct(id) {
+  const productId =
+    Number(id);
+  if (
+    !Number.isInteger(productId) ||
+    productId <= 0
+  ) {
+    alert(
+      "Nedostaje ispravan ID."
+    );
+    return;
+  }
+  const product =
+    products.find(
+      p =>
+        Number(p.id) ===
+        productId
+    );
+  if (!product) {
+    alert(
+      "Proizvod nije pronađen."
+    );
+    return;
+  }
+  const confirmed =
+    confirm(
+      `Da li želiš da obrišeš proizvod "${product.name}"?`
+    );
+  if (!confirmed) {
+    return;
+  }
+  try {
+    /*
+      OVO JE BITNO:
+      DELETE ide na:
+      /api/products/ID
+      a NE:
+      /api/products?id=ID
+    */
+    await adminRequest(
+      `/api/products/${encodeURIComponent(
+        productId
+      )}`,
+      {
+        method: "DELETE"
+      }
+    );
+    products =
+      products.filter(
+        p =>
+          Number(p.id) !==
+          productId
+      );
+    renderProducts();
+    renderAdmin();
+    renderCart();
+    alert(
+      "Proizvod je uspešno obrisan."
+    );
+  } catch (error) {
+    console.error(
+      "DELETE PRODUCT ERROR:",
+      error
+    );
+    alert(
+      "Greška pri brisanju proizvoda: " +
+      (
+        error?.message ||
+        "Pokušaj ponovo."
+      )
+    );
+  }
+}
+/* =========================
+   MOVE PRODUCT
+========================= */
+async function moveProduct(
+  id,
+  direction
+) {
+  const productId =
+    Number(id);
+  if (
+    !Number.isInteger(productId) ||
+    productId <= 0
+  ) {
+    alert(
+      "Nedostaje ispravan ID."
+    );
+    return;
+  }
+  const list =
+    [...products].sort(
+      (a,b) =>
+        (
+          Number(
+            a.sortOrder || 1
+          ) -
+          Number(
+            b.sortOrder || 1
+          )
+        ) ||
+        (
+          Number(a.id) -
+          Number(b.id)
+        )
+    );
+  const index =
+    list.findIndex(
+      product =>
+        Number(product.id) ===
+        productId
+    );
+  if (index < 0) {
+    return;
+  }
+  const newIndex =
+    index + Number(direction);
+  if (
+    newIndex < 0 ||
+    newIndex >= list.length
+  ) {
+    return;
+  }
+  const current =
+    list[index];
+  const target =
+    list[newIndex];
+  const currentOrder =
+    Number(
+      current.sortOrder || 1
+    );
+  const targetOrder =
+    Number(
+      target.sortOrder || 1
+    );
+  try {
+    /*
+      PATCH mora ići na:
+      /api/products/:id
+    */
+    await adminRequest(
+      `/api/products/${encodeURIComponent(
+        Number(current.id)
+      )}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body:
+          JSON.stringify({
+            sortOrder:
+              targetOrder
+          })
+      }
+    );
+    await adminRequest(
+      `/api/products/${encodeURIComponent(
+        Number(target.id)
+      )}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body:
+          JSON.stringify({
+            sortOrder:
+              currentOrder
+          })
+      }
+    );
+    await loadProducts();
+  } catch (error) {
+    console.error(
+      "MOVE PRODUCT ERROR:",
+      error
+    );
+    alert(
+      "Greška pri promeni pozicije: " +
+      (
+        error?.message ||
+        "Pokušaj ponovo."
+      )
+    );
+  }
+}
+/* =========================
+   TABS
+========================= */
+document
+  .querySelectorAll(
+    ".tabs button"
+  )
+  .forEach(
+    button => {
+      button.addEventListener(
+        "click",
+        () => {
+          filter =
+            button.dataset.filter;
+          document
+            .querySelectorAll(
+              ".tabs button"
+            )
+            .forEach(
+              item =>
+                item.classList.toggle(
+                  "active",
+                  item === button
+                )
+            );
+          renderProducts();
+        }
+      );
+    }
+  );
+/* =========================
+   FILTER EVENTS
+========================= */
+[
+  "search",
+  "availability",
+  "sort",
+  "brandFilter",
+  "sizeFilter",
+  "minPrice",
+  "maxPrice"
+]
+.forEach(
+  id => {
+    const element =
+      $(id);
+    if (!element) {
+      return;
+    }
+    element.addEventListener(
+      "input",
+      renderProducts
+    );
+    element.addEventListener(
+      "change",
+      renderProducts
+    );
+  }
+);
+/* =========================
+   ESC
+========================= */
+document.addEventListener(
+  "keydown",
+  event => {
+    if (
+      event.key !==
+      "Escape"
+    ) {
+      return;
+    }
+    closeProduct();
+    closeCart();
+    closeCheckout();
+    closeLogin();
+    closeAdminPanel();
+  }
+);
+/* =========================
+   START
+========================= */
+loadProducts();
+</script>
+</body>
+</html>
