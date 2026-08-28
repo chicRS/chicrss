@@ -1,40 +1,57 @@
-# Chic.rs
+# Chic.rs — kompletna verzija
 
-Chic.rs je online streetwear prodavnica (patike i garderoba) sa admin panelom za upravljanje ponudom, korpom i porudžbinama na pouzeće.
+Ovo je kompletan redizajn postojećeg Chic.rs projekta, uz zadržan Netlify backend, admin prijavu, bazu, Blobs slike i Netlify Forms porudžbine.
 
-## Tehnologije
+## Admin mogućnosti
+- dodavanje proizvoda
+- uređivanje proizvoda
+- brisanje proizvoda
+- više slika po proizvodu
+- pregled svih sačuvanih slika
+- dodavanje novih slika bez brisanja starih
+- ↑ / ↓ menjanje redosleda slika
+- ★ postavljanje glavne slike
+- × brisanje slike
+- brend
+- kategorija
+- veličine
+- količina na stanju
+- oznaka NEW / SALE / BESTSELLER
+- pozicija proizvoda na shopu
+- ↑ / ↓ pomeranje proizvoda na sajtu
 
-- Statički HTML/CSS/JS frontend (bez build koraka)
-- Netlify Functions (TypeScript) za API
-- Netlify Database (Postgres + Drizzle ORM) za proizvode
-- Netlify Blobs za slike proizvoda otpremljene iz admin panela
-- Netlify Forms za porudžbine (plaćanje pouzećem)
+## Shop
+- srpski jezik
+- pretraga po nazivu i brendu
+- kategorije
+- filter brenda
+- filter veličine
+- filter cene
+- dostupno / rasprodato
+- sortiranje po poziciji, datumu i ceni
+- više slika na kartici sa strelicama
+- detaljan prikaz proizvoda sa galerijom
+- korpa i postojeći checkout
 
-## Struktura
+## VAŽNO — baza
+Nova verzija dodaje kolone:
+- `brand`
+- `stock`
+- `sort_order`
 
-- `index.html`, `style.css`, `assets/` — sajt
-- `netlify/functions/products.mts` — CRUD API za proizvode (`/api/products`)
-- `netlify/functions/admin-login.mts`, `admin-logout.mts` — prijava/odjava admina (cookie sesija)
-- `netlify/functions/upload.mts`, `image.mts` — otpremanje i prikaz slika proizvoda (Netlify Blobs)
-- `db/schema.ts` — Drizzle šema baze
-- `netlify/database/migrations/` — migracije baze (uključuju početne proizvode)
+U folderu `netlify/database/migrations/20260828180000_add_product_management_fields/` nalazi se SQL migracija.
 
-## Pokretanje lokalno
+Ako tvoj Netlify projekat ne primenjuje migracije automatski, potrebno je jednom izvršiti taj SQL nad Netlify bazom pre korišćenja novih admin polja.
 
-```bash
-npm install
-netlify dev --port 8889
-```
+## Admin lozinka
+Postojeća podrazumevana lozinka u kodu je `chic2026`, ali za pravi sajt obavezno podesi Netlify environment variables:
+- `ADMIN_PASSWORD`
+- `ADMIN_SESSION_SECRET`
 
-Otvori `http://localhost:8889`.
-
-## Admin panel
-
-Klikni **ADMIN** u gornjem desnom uglu. Demo lozinka je `chic2026`.
-
-**Pre javne upotrebe:** podesi environment varijable u Netlify podešavanjima sajta:
-
-- `ADMIN_PASSWORD` — nova admin lozinka
-- `ADMIN_SESSION_SECRET` — nasumičan tajni string za potpisivanje sesije
-
-Proizvodi i slike se čuvaju u Netlify bazi/Blobs storage-u, tako da su promene odmah vidljive svim posetiocima na svim uređajima.
+## Deploy
+Zadrži ceo projekat zajedno. Nemoj brisati:
+- `netlify/functions`
+- `netlify/database`
+- `db`
+- `netlify.toml`
+- `package.json`
