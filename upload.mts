@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import type { Config } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
 import { isAuthorized, unauthorized } from "./lib/admin-auth.js";
