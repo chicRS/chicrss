@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+<rect width="900" height="900" fill="#f7f6f2"/>
+<rect x="45" y="45" width="810" height="810" rx="40" fill="#fff" stroke="#deddd8" stroke-width="4"/>
+<path d="M185 535 C265 505 305 420 380 395 C430 378 470 402 505 440 L630 565 C660 595 642 645 596 645 H245 C190 645 155 570 185 535Z" fill="#111"/>
+<path d="M250 505 C315 485 330 425 388 412 C430 402 452 420 478 448 L540 510 C493 500 442 510 393 525 C340 541 290 545 250 505Z" fill="#333"/>
+<text x="450" y="735" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="42" font-weight="900" fill="#111">TN TRIPLE BLACK</text>
+<text x="450" y="785" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="600" fill="#777">CHIC.RS</text>
+</svg>

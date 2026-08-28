@@ -23,10 +23,7 @@ export function clearSessionCookie(): string {
 
 export function isAuthorized(req: Request): boolean {
   const cookieHeader = req.headers.get("cookie") || "";
-  const match = cookieHeader
-    .split(";")
-    .map((c) => c.trim())
-    .find((c) => c.startsWith(`${COOKIE_NAME}=`));
+  const match = cookieHeader.split(";").map(c => c.trim()).find(c => c.startsWith(`${COOKIE_NAME}=`));
   if (!match) return false;
   const token = match.slice(COOKIE_NAME.length + 1);
   const [prefix, ts, providedSig] = token.split(".");
@@ -34,12 +31,15 @@ export function isAuthorized(req: Request): boolean {
   const payload = `${prefix}.${ts}`;
   const expectedSig = sign(payload);
   if (expectedSig.length !== providedSig.length) return false;
-  return crypto.timingSafeEqual(Buffer.from(expectedSig), Buffer.from(providedSig));
+  try {
+    return crypto.timingSafeEqual(Buffer.from(expectedSig), Buffer.from(providedSig));
+  } catch {
+    return false;
+  }
 }
 
 export function checkPassword(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || "chic2026";
-  return password === expected;
+  return password === (process.env.ADMIN_PASSWORD || "chic2026");
 }
 
 export function unauthorized(): Response {
