@@ -1,57 +1,25 @@
-# Chic.rs — kompletna verzija
+# Chic.rs — gotova Netlify verzija
 
-Ovo je kompletan redizajn postojećeg Chic.rs projekta, uz zadržan Netlify backend, admin prijavu, bazu, Blobs slike i Netlify Forms porudžbine.
-
-## Admin mogućnosti
-- dodavanje proizvoda
-- uređivanje proizvoda
-- brisanje proizvoda
+Ovaj paket sadrži:
+- responsive Chic.rs shop
+- Patike / Garderoba kategorije
+- pretragu, brend, veličinu, cenu i dostupnost
 - više slika po proizvodu
-- pregled svih sačuvanih slika
-- dodavanje novih slika bez brisanja starih
-- ↑ / ↓ menjanje redosleda slika
-- ★ postavljanje glavne slike
-- × brisanje slike
-- brend
-- kategorija
-- veličine
-- količina na stanju
-- oznaka NEW / SALE / BESTSELLER
-- pozicija proizvoda na shopu
-- ↑ / ↓ pomeranje proizvoda na sajtu
+- galeriju i izbor veličine
+- korpu i checkout
+- dostavu 680 RSD
+- zamenu veličine uz prethodni dogovor
+- admin prijavu
+- dodavanje/izmenu/brisanje proizvoda
+- brend, stanje, poziciju i oznaku
+- pomeranje proizvoda ↑ ↓
+- upload više slika
+- Netlify Functions + Drizzle schema + SQL migraciju
 
-## Shop
-- srpski jezik
-- pretraga po nazivu i brendu
-- kategorije
-- filter brenda
-- filter veličine
-- filter cene
-- dostupno / rasprodato
-- sortiranje po poziciji, datumu i ceni
-- više slika na kartici sa strelicama
-- detaljan prikaz proizvoda sa galerijom
-- korpa i postojeći checkout
+## Admin
+Podrazumevana lozinka je `chic2026` ako u Netlify Environment Variables nije postavljen `ADMIN_PASSWORD`.
 
-## VAŽNO — baza
-Nova verzija dodaje kolone:
-- `brand`
-- `stock`
-- `sort_order`
+## Važno
+Za produkciju postavi `ADMIN_PASSWORD` i `ADMIN_SESSION_SECRET` u Netlify Environment Variables.
 
-U folderu `netlify/database/migrations/20260828180000_add_product_management_fields/` nalazi se SQL migracija.
-
-Ako tvoj Netlify projekat ne primenjuje migracije automatski, potrebno je jednom izvršiti taj SQL nad Netlify bazom pre korišćenja novih admin polja.
-
-## Admin lozinka
-Postojeća podrazumevana lozinka u kodu je `chic2026`, ali za pravi sajt obavezno podesi Netlify environment variables:
-- `ADMIN_PASSWORD`
-- `ADMIN_SESSION_SECRET`
-
-## Deploy
-Zadrži ceo projekat zajedno. Nemoj brisati:
-- `netlify/functions`
-- `netlify/database`
-- `db`
-- `netlify.toml`
-- `package.json`
+Nakon povezivanja repozitorijuma sa Netlify-om, deploy se pokreće automatski.
