@@ -2019,6 +2019,83 @@ function hideEditor() {
   editorImages = [];
   pendingFiles = [];
 }
+  async function deleteProduct(id) {
+
+  const productId = Number(id);
+
+  if (!Number.isInteger(productId) || productId <= 0) {
+    alert("Nedostaje ispravan ID.");
+    return;
+  }
+
+  const product = products.find(
+    p => Number(p.id) === productId
+  );
+
+  if (!product) {
+    alert("Proizvod nije pronađen.");
+    return;
+  }
+
+  if (
+    !confirm(
+      `Da li želiš da obrišeš proizvod "${product.name}"?`
+    )
+  ) {
+    return;
+  }
+
+  try {
+
+    const response = await adminRequest(
+      `/api/products/${encodeURIComponent(productId)}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    if (!response.ok) {
+
+      let message =
+        "Greška pri brisanju proizvoda.";
+
+      try {
+        const data =
+          await response.json();
+
+        if (data?.error) {
+          message = data.error;
+        }
+      } catch {}
+
+      throw new Error(message);
+    }
+
+    products = products.filter(
+      p => Number(p.id) !== productId
+    );
+
+    renderProducts();
+    renderAdmin();
+    renderCart();
+
+    alert(
+      "Proizvod je uspešno obrisan."
+    );
+
+  } catch (error) {
+
+    console.error(
+      "DELETE PRODUCT ERROR:",
+      error
+    );
+
+    alert(
+      "Greška pri brisanju proizvoda: " +
+      (error?.message || "Pokušaj ponovo.")
+    );
+  }
+}
 
 
 /* =========================
