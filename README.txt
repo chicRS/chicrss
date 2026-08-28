@@ -1,16 +1,35 @@
-CHIC.RS — FIXED DEPLOY PACKAGE
+CHIC.RS — FIXED ADMIN VERSION
 
-Šta je popravljeno:
-- izbačen je Drizzle iz runtime-a da se više ne javljaju greške sa verzijama drizzle-orm;
-- nema starog package-lock.json koji je vukao stare zavisnosti;
-- Netlify Database koristi direktni @netlify/database SQL API;
-- nova migracija je na PRAVOM mestu: netlify/database/migrations/<timestamp>_.../migration.sql;
-- postojeće products tabele se dopunjavaju brand/stock/sort_order/description kolonama;
-- logo je ugrađen kao /chic-logo.svg, pa nema broken-image problema;
-- admin podržava dostupno/nedostupno, količinu, cenu, veličine, kategoriju, brend, opis, oznaku, poziciju i više slika;
-- slike se čuvaju u Netlify Blobs;
-- dostava je 680 RSD;
-- admin lozinka: chic2026, osim ako u Netlify Environment Variables imaš ADMIN_PASSWORD.
+OVO IZDANJE NE KORISTI NETLIFY DATABASE/DRIZZLE ZA PROIZVODE.
+Proizvodi se čuvaju u Netlify Blobs, a slike se takođe čuvaju u Netlify Blobs.
+Time je uklonjen uzrok prethodnih grešaka sa migracijama i verzijama ORM-a.
 
-VAŽNO:
-Ovaj ZIP je napravljen da se postavi kao NOVI deploy. Ne ubacuj stari package-lock.json preko ovog paketa.
+POSTAVLJANJE:
+1. Uploaduj sadržaj ovog ZIP-a na GitHub repo ili Netlify.
+2. Netlify Build command: npm run build
+3. Publish directory: .
+4. Functions directory: netlify/functions
+
+ADMIN:
+Klikni ADMIN na sajtu.
+Podrazumevana lozinka: chic2026
+Ako u Netlify Environment variables postaviš ADMIN_PASSWORD, koristiće se ta lozinka.
+
+ADMIN PODRŽAVA:
+- dodavanje proizvoda
+- izmenu i brisanje
+- dostupno / nedostupno
+- broj komada
+- cenu
+- veličine
+- kategoriju
+- brend
+- oznaku
+- opis
+- poziciju
+- više slika po proizvodu
+- menjanje glavne slike i redosleda slika
+
+DOSTAVA: 680 RSD
+
+Napomena: postojeći proizvodi iz stare Netlify Database tabele nisu automatski kopirani u Blobs. Ovaj paket ima 3 početna proizvoda i nakon toga sve izmene radiš iz Admin panela.

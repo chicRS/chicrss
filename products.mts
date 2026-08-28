@@ -1,143 +1,170 @@
 import type { Config } from "@netlify/functions";
-import { getDatabase } from "@netlify/database";
+import { getStore } from "@netlify/blobs";
 import { isAuthorized, unauthorized } from "./lib/admin-auth.js";
 
-const db = getDatabase();
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  sizes: string[];
+  badge: string;
+  image: string;
+  images: string[];
+  description: string;
+  brand: string;
+  stock: number;
+  sortOrder: number;
+  createdAt: string;
+};
 
-function imagesOf(value: unknown): string[] {
-  if (Array.isArray(value)) return value.map(String).filter(Boolean);
-  const s = String(value || "");
-  try {
-    const parsed = JSON.parse(s);
-    return Array.isArray(parsed) ? parsed.map(String).filter(Boolean) : (s ? [s] : []);
-  } catch {
-    return s ? [s] : [];
+const STORE = "chic-products";
+const KEY = "products";
+
+const seed: Product[] = [
+  {
+    id: 1,
+    name: "TN Triple Black",
+    price: 12990,
+    category: "patike",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    badge: "BESTSELLER",
+    image: "/assets/tn-black.svg",
+    images: ["/assets/tn-black.svg"],
+    description: "Triple Black model.",
+    brand: "Nike",
+    stock: 5,
+    sortOrder: 1,
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 2,
+    name: "TN Carbon",
+    price: 13990,
+    category: "patike",
+    sizes: ["40", "41", "42", "43", "44"],
+    badge: "NEW",
+    image: "/assets/tn-carbon.svg",
+    images: ["/assets/tn-carbon.svg"],
+    description: "Carbon streetwear model.",
+    brand: "Nike",
+    stock: 4,
+    sortOrder: 2,
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 3,
+    name: "TN Grey / Neon",
+    price: 14990,
+    category: "patike",
+    sizes: ["40", "41", "42", "43", "44", "45"],
+    badge: "NEW",
+    image: "/assets/tn-grey-neon.svg",
+    images: ["/assets/tn-grey-neon.svg"],
+    description: "Grey / Neon model.",
+    brand: "Nike",
+    stock: 3,
+    sortOrder: 3,
+    createdAt: new Date().toISOString()
   }
+];
+
+function store() {
+  return getStore({ name: STORE, consistency: "strong" });
 }
 
-function clientRow(p: any) {
-  const images = imagesOf(p.image);
-  return {
-    id: Number(p.id),
-    name: String(p.name || ""),
-    price: Number(p.price || 0),
-    category: String(p.category || "patike"),
-    sizes: String(p.sizes || "").split(",").map(x => x.trim()).filter(Boolean),
-    badge: String(p.badge || ""),
-    image: images[0] || "",
-    images,
-    description: String(p.description || ""),
-    brand: String(p.brand || ""),
-    stock: Math.max(0, Number(p.stock || 0)),
-    sortOrder: Number(p.sort_order || 0)
-  };
+async function readProducts(): Promise<Product[]> {
+  const data = await store().get(KEY, { type: "json", consistency: "strong" }) as Product[] | null;
+  if (Array.isArray(data)) return data;
+  await store().setJSON(KEY, seed);
+  return seed;
 }
 
-async function ensureSchema() {
-  await db.sql`
-    CREATE TABLE IF NOT EXISTS products (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      price INTEGER NOT NULL,
-      category TEXT NOT NULL DEFAULT 'patike',
-      sizes TEXT NOT NULL DEFAULT '',
-      badge TEXT NOT NULL DEFAULT '',
-      image TEXT NOT NULL DEFAULT '',
-      description TEXT NOT NULL DEFAULT '',
-      brand TEXT NOT NULL DEFAULT '',
-      stock INTEGER NOT NULL DEFAULT 0,
-      sort_order INTEGER NOT NULL DEFAULT 0,
-      created_at TIMESTAMP DEFAULT NOW()
-    )
-  `;
-  await db.sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT ''`;
-  await db.sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS brand TEXT NOT NULL DEFAULT ''`;
-  await db.sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0`;
-  await db.sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0`;
-  await db.sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW`;
+async function writeProducts(products: Product[]) {
+  await store().setJSON(KEY, products);
 }
 
-function bodyImages(body: any) {
+function bodyImages(body: any): string[] {
   if (Array.isArray(body.images)) return body.images.map(String).filter(Boolean);
   return body.image ? [String(body.image)] : [];
 }
 
+function cleanProduct(body: any, old?: Product): Product {
+  const images = bodyImages(body);
+  const price = Math.floor(Number(body.price));
+  const stock = Math.max(0, Math.floor(Number(body.stock || 0)));
+  const sortOrder = Math.max(1, Math.floor(Number(body.sortOrder || 1)));
+  return {
+    id: old?.id ?? 0,
+    name: String(body.name || "").trim(),
+    price,
+    category: String(body.category || "patike").trim(),
+    sizes: Array.isArray(body.sizes)
+      ? body.sizes.map(String).map(x => x.trim()).filter(Boolean)
+      : String(body.sizes || "").split(",").map((x: string) => x.trim()).filter(Boolean),
+    badge: String(body.badge || "").trim(),
+    image: images[0] || "",
+    images,
+    description: String(body.description || ""),
+    brand: String(body.brand || "").trim(),
+    stock,
+    sortOrder,
+    createdAt: old?.createdAt || new Date().toISOString()
+  };
+}
+
 export default async (req: Request, context: { params: Record<string, string> }) => {
   try {
-    await ensureSchema();
     const id = context.params.id ? Number(context.params.id) : null;
 
     if (req.method === "GET") {
-      const rows = await db.sql`SELECT * FROM products ORDER BY sort_order ASC, id ASC`;
-      return Response.json(rows.map(clientRow));
+      const products = await readProducts();
+      products.sort((a, b) => (a.sortOrder - b.sortOrder) || (a.id - b.id));
+      return Response.json(products);
     }
 
     if (!isAuthorized(req)) return unauthorized();
 
-    if (req.method === "POST" || req.method === "PUT") {
-      if (req.method === "PUT" && !id) return Response.json({ error: "Missing id" }, { status: 400 });
+    const products = await readProducts();
 
+    if (req.method === "POST") {
       const body = await req.json();
-      const name = String(body.name || "").trim();
-      const price = Math.floor(Number(body.price));
-      const category = String(body.category || "patike").trim();
-      const brand = String(body.brand || "").trim();
-      const description = String(body.description || "");
-      const badge = String(body.badge || "");
-      const sizes = Array.isArray(body.sizes) ? body.sizes.map(String).join(",") : String(body.sizes || "");
-      const stock = Math.max(0, Math.floor(Number(body.stock || 0)));
-      const sortOrder = Math.max(0, Math.floor(Number(body.sortOrder || 0)));
-      const images = bodyImages(body);
-
-      if (!name || !Number.isFinite(price) || price <= 0 || !category || images.length === 0) {
+      const product = cleanProduct(body);
+      if (!product.name || !Number.isFinite(product.price) || product.price <= 0 || !product.category || product.images.length === 0) {
         return Response.json({ error: "Missing required fields" }, { status: 400 });
       }
+      product.id = products.reduce((max, p) => Math.max(max, Number(p.id) || 0), 0) + 1;
+      products.push(product);
+      await writeProducts(products);
+      return Response.json(product, { status: 201 });
+    }
 
-      const image = JSON.stringify(images);
-
-      if (req.method === "POST") {
-        const rows = await db.sql`
-          INSERT INTO products
-            (name, price, category, sizes, badge, image, description, brand, stock, sort_order)
-          VALUES
-            (${name}, ${price}, ${category}, ${sizes}, ${badge}, ${image}, ${description}, ${brand}, ${stock}, ${sortOrder})
-          RETURNING *
-        `;
-        return Response.json(clientRow(rows[0]), { status: 201 });
+    if (req.method === "PUT") {
+      if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
+      const index = products.findIndex(p => Number(p.id) === id);
+      if (index < 0) return Response.json({ error: "Not found" }, { status: 404 });
+      const body = await req.json();
+      const product = cleanProduct(body, products[index]);
+      if (!product.name || !Number.isFinite(product.price) || product.price <= 0 || !product.category || product.images.length === 0) {
+        return Response.json({ error: "Missing required fields" }, { status: 400 });
       }
-
-      const rows = await db.sql`
-        UPDATE products SET
-          name=${name},
-          price=${price},
-          category=${category},
-          sizes=${sizes},
-          badge=${badge},
-          image=${image},
-          description=${description},
-          brand=${brand},
-          stock=${stock},
-          sort_order=${sortOrder}
-        WHERE id=${id}
-        RETURNING *
-      `;
-      if (!rows[0]) return Response.json({ error: "Not found" }, { status: 404 });
-      return Response.json(clientRow(rows[0]));
+      products[index] = product;
+      await writeProducts(products);
+      return Response.json(product);
     }
 
     if (req.method === "DELETE") {
       if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
-      await db.sql`DELETE FROM products WHERE id=${id}`;
+      const next = products.filter(p => Number(p.id) !== id);
+      if (next.length === products.length) return Response.json({ error: "Not found" }, { status: 404 });
+      await writeProducts(next);
       return new Response(null, { status: 204 });
     }
 
     return new Response("Method not allowed", { status: 405 });
   } catch (error: any) {
     console.error("PRODUCTS_API_ERROR", error);
-    return Response.json(
-      { error: "Database error", detail: String(error?.message || error) },
-      { status: 500 }
-    );
+    return Response.json({ error: "Products storage error", detail: String(error?.message || error) }, { status: 500 });
   }
 };
 

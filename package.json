@@ -1,14 +1,13 @@
 {
   "name": "chicrs-shop",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "build": "echo \"Chic.rs ready for Netlify\""
   },
   "dependencies": {
     "@netlify/functions": "^4.2.3",
-    "@netlify/blobs": "^9.0.0",
-    "@netlify/database": "^2.0.0"
+    "@netlify/blobs": "^9.0.0"
   }
 }
