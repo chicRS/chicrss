@@ -8,5 +8,8 @@ export const products = pgTable("products", {
   sizes: text().notNull().default(""),
   badge: text().notNull().default(""),
   image: text().notNull(),
+  brand: text().notNull().default(""),
+  stock: integer().notNull().default(0),
+  sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
