@@ -1,6 +1,9 @@
 import type { Config } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
-import { isAuthorized, unauthorized } from "./lib/admin-auth.js";
+import {
+  isAuthorized,
+  unauthorized
+} from "./lib/admin-auth.js";
 
 type Product = {
   id: number;
@@ -17,124 +20,168 @@ type Product = {
   images: string[];
 };
 
-const store = () => getStore("chic-products");
+const store = () =>
+  getStore("chic-products");
+
 const KEY = "products.json";
 
-async function readProducts(): Promise<Product[]> {
-  const raw = await store().get(KEY, { type: "text" });
 
-  if (!raw) return [];
+async function readProducts(): Promise<Product[]> {
+  const raw =
+    await store().get(KEY, {
+      type: "text"
+    });
+
+  if (!raw) {
+    return [];
+  }
 
   try {
     const data = JSON.parse(raw);
-    return Array.isArray(data) ? data : [];
+
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data;
   } catch {
     return [];
   }
 }
 
-async function saveProducts(products: Product[]) {
-  await store().set(KEY, JSON.stringify(products));
+
+async function saveProducts(
+  products: Product[]
+) {
+  await store().set(
+    KEY,
+    JSON.stringify(products)
+  );
 }
 
-function getId(
-  req: Request,
-  context: { params: Record<string, string> }
-): number | null {
-  // Prvo pokušaj /api/products/:id
-  const paramId = context.params?.id;
 
-  if (paramId !== undefined && paramId !== "") {
-    const n = Number(paramId);
+/* =========================
+   NORMALIZE PRODUCT
+========================= */
 
-    if (Number.isInteger(n) && n > 0) {
-      return n;
-    }
-  }
+function normalize(
+  body: any,
+  id: number
+): Product | null {
 
-  // Zatim pokušaj ?id=123
-  try {
-    const url = new URL(req.url);
-    const queryId = url.searchParams.get("id");
+  const existingImages =
+    Array.isArray(body.images)
+      ? body.images
+          .filter(Boolean)
+          .map(String)
+      : [];
 
-    if (queryId) {
-      const n = Number(queryId);
-
-      if (Number.isInteger(n) && n > 0) {
-        return n;
-      }
-    }
-  } catch {
-    // ignorisanje greške URL-a
-  }
-
-function normalize(body: any, id: number): Product | null {
-  const existingImages = Array.isArray(body.images)
-    ? body.images
-        .filter(Boolean)
-        .map(String)
-    : [];
-
-  const newImages = Array.isArray(body.newImages)
-    ? body.newImages
-        .filter(
-          (x: any) =>
-            x &&
-            typeof x.data === "string"
-        )
-        .map(
-          (x: any) =>
-            `data:${x.type || "image/jpeg"};base64,${x.data}`
-        )
-    : [];
+  const newImages =
+    Array.isArray(body.newImages)
+      ? body.newImages
+          .filter(
+            (x: any) =>
+              x &&
+              typeof x.data === "string"
+          )
+          .map(
+            (x: any) =>
+              `data:${
+                x.type || "image/jpeg"
+              };base64,${x.data}`
+          )
+      : [];
 
   const images = [
     ...existingImages,
     ...newImages
   ];
 
-  const sizes = Array.isArray(body.sizes)
-    ? body.sizes
-        .map(String)
-        .map((s: string) => s.trim())
-        .filter(Boolean)
-    : String(body.sizes || "")
-        .split(",")
-        .map((s: string) => s.trim())
-        .filter(Boolean);
+
+  const sizes =
+    Array.isArray(body.sizes)
+
+      ? body.sizes
+          .map(String)
+          .map(
+            (s: string) =>
+              s.trim()
+          )
+          .filter(Boolean)
+
+      : String(
+          body.sizes || ""
+        )
+          .split(",")
+          .map(
+            (s: string) =>
+              s.trim()
+          )
+          .filter(Boolean);
+
 
   const product: Product = {
+
     id,
 
-    name: String(body.name || "").trim(),
+    name:
+      String(
+        body.name || ""
+      ).trim(),
 
-    price: Number(body.price),
+    price:
+      Number(body.price),
 
-    category: String(body.category || "").trim(),
+    category:
+      String(
+        body.category || ""
+      ).trim(),
 
-    description: String(body.description || "").trim(),
+    description:
+      String(
+        body.description || ""
+      ).trim(),
 
-    brand: String(body.brand || "").trim(),
+    brand:
+      String(
+        body.brand || ""
+      ).trim(),
 
-    stock: Math.max(
-      0,
-      Number(body.stock || 0)
-    ),
+    stock:
+      Math.max(
+        0,
+        Number(
+          body.stock || 0
+        )
+      ),
 
-    sortOrder: Number(body.sortOrder || 0),
+    sortOrder:
+      Math.max(
+        1,
+        Number(
+          body.sortOrder || 1
+        )
+      ),
 
     sizes,
 
-    badge: String(body.badge || "").trim(),
+    badge:
+      String(
+        body.badge || ""
+      ).trim(),
 
-    image: images[0] || "",
+    image:
+      images[0] || "",
 
     images
   };
 
+
   if (
     !product.name ||
-    !Number.isFinite(product.price) ||
+    !Number.isFinite(
+      product.price
+    ) ||
     product.price <= 0 ||
     !product.category ||
     product.images.length === 0
@@ -142,10 +189,14 @@ function normalize(body: any, id: number): Product | null {
     return null;
   }
 
+
   return product;
 }
 
 
+/* =========================
+   API
+========================= */
 
 export default async (
   req: Request,
@@ -153,191 +204,454 @@ export default async (
     params: Record<string, string>;
   }
 ) => {
-  try {
-    const method = req.method.toUpperCase();
 
-    // =========================
-    // JAVNO UČITAVANJE PROIZVODA
-    // =========================
+  try {
+
+    const method =
+      req.method.toUpperCase();
+
+
+    /*
+      Netlify može proslediti ID
+      kao params.id.
+    */
+
+    const rawId =
+      context?.params?.id;
+
+
+    const id =
+      rawId !== undefined &&
+      rawId !== null &&
+      String(rawId).trim() !== ""
+        ? Number(rawId)
+        : null;
+
+
+    /* =========================
+       GET
+       /api/products
+    ========================= */
 
     if (method === "GET") {
-      const products = await readProducts();
+
+      const products =
+        await readProducts();
 
       products.sort(
         (a, b) =>
-          Number(a.sortOrder || 0) -
-            Number(b.sortOrder || 0) ||
-          Number(a.id) - Number(b.id)
+          Number(
+            a.sortOrder || 0
+          ) -
+          Number(
+            b.sortOrder || 0
+          ) ||
+          Number(a.id) -
+          Number(b.id)
       );
 
-      return Response.json(products);
+      return Response.json(
+        products
+      );
     }
 
-    // =========================
-    // ADMIN PROVERA
-    // =========================
+
+    /* =========================
+       ADMIN PROVERA
+    ========================= */
 
     if (!isAuthorized(req)) {
       return unauthorized();
     }
 
-    const products = await readProducts();
 
-    // =========================
-    // NOVI PROIZVOD
-    // =========================
+    const products =
+      await readProducts();
+
+
+    /* =========================
+       POST
+       NOVI PROIZVOD
+       /api/products
+    ========================= */
 
     if (method === "POST") {
-      const body = await req.json();
+
+      const body =
+        await req.json();
+
 
       const nextId =
         products.reduce(
-          (max, p) =>
+          (
+            max,
+            p
+          ) =>
             Math.max(
               max,
-              Number(p.id) || 0
+              Number(
+                p.id
+              ) || 0
             ),
           0
         ) + 1;
 
+
       const product =
-        normalize(body, nextId);
+        normalize(
+          body,
+          nextId
+        );
+
 
       if (!product) {
+
         return Response.json(
           {
             error:
               "Nedostaju naziv, cena, kategorija ili slika."
           },
-          { status: 400 }
+          {
+            status: 400
+          }
         );
       }
 
-      products.push(product);
 
-      await saveProducts(products);
+      products.push(
+        product
+      );
+
+
+      await saveProducts(
+        products
+      );
+
 
       return Response.json(
         product,
-        { status: 201 }
+        {
+          status: 201
+        }
       );
     }
 
-    // =========================
-    // IZMENA PROIZVODA
-    // =========================
+
+    /* =========================
+       PUT
+       IZMENA PROIZVODA
+
+       /api/products/:id
+    ========================= */
 
     if (method === "PUT") {
-      const id = getId(req, context);
 
-      if (id === null) {
+      if (
+        id === null ||
+        !Number.isInteger(id) ||
+        id <= 0
+      ) {
+
         return Response.json(
           {
             error:
               "Nedostaje ispravan ID."
           },
-          { status: 400 }
+          {
+            status: 400
+          }
         );
       }
 
+
       const index =
         products.findIndex(
-          p => Number(p.id) === id
+          p =>
+            Number(p.id) ===
+            id
         );
 
+
       if (index === -1) {
+
         return Response.json(
           {
             error:
               "Proizvod nije pronađen."
           },
-          { status: 404 }
+          {
+            status: 404
+          }
         );
       }
 
-      const body = await req.json();
+
+      const body =
+        await req.json();
+
+
+      /*
+        Ako frontend ne šalje
+        slike, zadržavamo stare.
+      */
+
+      if (
+        !Array.isArray(
+          body.images
+        ) &&
+        !Array.isArray(
+          body.newImages
+        )
+      ) {
+
+        body.images =
+          products[index]
+            .images || [];
+
+      }
+
 
       const product =
-        normalize(body, id);
+        normalize(
+          body,
+          id
+        );
+
 
       if (!product) {
+
         return Response.json(
           {
             error:
               "Nedostaju naziv, cena, kategorija ili slika."
           },
-          { status: 400 }
+          {
+            status: 400
+          }
         );
       }
 
-      products[index] = product;
 
-      await saveProducts(products);
+      products[index] =
+        product;
 
-      return Response.json(product);
+
+      await saveProducts(
+        products
+      );
+
+
+      return Response.json(
+        product
+      );
     }
 
-    // =========================
-    // BRISANJE PROIZVODA
-    // =========================
+
+    /* =========================
+       DELETE
+       BRISANJE PROIZVODA
+
+       /api/products/:id
+    ========================= */
 
     if (method === "DELETE") {
-      const id = getId(req, context);
 
-      if (id === null) {
+      if (
+        id === null ||
+        !Number.isInteger(id) ||
+        id <= 0
+      ) {
+
         return Response.json(
           {
             error:
               "Nedostaje ispravan ID."
           },
-          { status: 400 }
+          {
+            status: 400
+          }
         );
       }
 
+
       const index =
         products.findIndex(
-          p => Number(p.id) === id
+          p =>
+            Number(p.id) ===
+            id
         );
 
+
       if (index === -1) {
+
         return Response.json(
           {
             error:
               "Proizvod nije pronađen."
           },
-          { status: 404 }
+          {
+            status: 404
+          }
         );
       }
 
-      products.splice(index, 1);
 
-      await saveProducts(products);
+      products.splice(
+        index,
+        1
+      );
 
-      return new Response(null, {
-        status: 204
-      });
+
+      await saveProducts(
+        products
+      );
+
+
+      return Response.json(
+        {
+          success: true
+        }
+      );
     }
+
+
+    /* =========================
+       MOVE / PATCH
+       Pomera poziciju proizvoda
+    ========================= */
+
+    if (method === "PATCH") {
+
+      if (
+        id === null ||
+        !Number.isInteger(id) ||
+        id <= 0
+      ) {
+
+        return Response.json(
+          {
+            error:
+              "Nedostaje ispravan ID."
+          },
+          {
+            status: 400
+          }
+        );
+      }
+
+
+      const index =
+        products.findIndex(
+          p =>
+            Number(p.id) ===
+            id
+        );
+
+
+      if (index === -1) {
+
+        return Response.json(
+          {
+            error:
+              "Proizvod nije pronađen."
+          },
+          {
+            status: 404
+          }
+        );
+      }
+
+
+      const body =
+        await req.json();
+
+
+      if (
+        body &&
+        body.sortOrder !== undefined
+      ) {
+
+        const sortOrder =
+          Number(
+            body.sortOrder
+          );
+
+
+        if (
+          !Number.isFinite(
+            sortOrder
+          )
+        ) {
+
+          return Response.json(
+            {
+              error:
+                "Neispravna pozicija."
+            },
+            {
+              status: 400
+            }
+          );
+        }
+
+
+        products[index]
+          .sortOrder =
+            Math.max(
+              1,
+              Math.floor(
+                sortOrder
+              )
+            );
+      }
+
+
+      await saveProducts(
+        products
+      );
+
+
+      return Response.json(
+        products[index]
+      );
+    }
+
 
     return new Response(
       "Method not allowed",
-      { status: 405 }
+      {
+        status: 405,
+        headers: {
+          Allow:
+            "GET, POST, PUT, PATCH, DELETE"
+        }
+      }
     );
 
   } catch (error) {
+
     console.error(
       "Products API error:",
       error
     );
+
 
     return Response.json(
       {
         error:
           "Greška na serveru."
       },
-      { status: 500 }
+      {
+        status: 500
+      }
     );
   }
 };
+
+
+/* =========================
+   NETLIFY ROUTES
+========================= */
 
 export const config: Config = {
   path: [
