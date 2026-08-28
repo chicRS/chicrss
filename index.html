@@ -3,21 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>Chic.rs — Patike & Streetwear</title>
-
-<meta
-  name="description"
-  content="Chic.rs — online streetwear shop u Srbiji"
->
+<meta name="description" content="Chic.rs — online streetwear shop u Srbiji">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-  rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -29,7 +20,6 @@ CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI · ZAMENA VELIČINE
 </div>
 
 <header>
-
   <a class="logo" href="#home">
     <img src="/chic-logo.svg" alt="CHIC.RS">
   </a>
@@ -42,29 +32,16 @@ CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI · ZAMENA VELIČINE
   </nav>
 
   <div class="head-actions">
-
-    <button onclick="openAdmin()">
-      ADMIN
-    </button>
-
-    <button onclick="openCart()">
-      KORPA <b id="cartCount">0</b>
-    </button>
-
+    <button onclick="openAdmin()">ADMIN</button>
+    <button onclick="openCart()">KORPA <b id="cartCount">0</b></button>
   </div>
-
 </header>
-
 
 <main>
 
 <section class="hero" id="home">
-
   <div>
-
-    <p class="eyebrow">
-      CHIC.RS / STREETWEAR
-    </p>
+    <p class="eyebrow">CHIC.RS / STREETWEAR</p>
 
     <h1>
       WEAR<br>
@@ -80,63 +57,34 @@ CHIC.RS · ONLINE SHOP · DOSTAVA U SRBIJI · ZAMENA VELIČINE
     <a class="primary" href="#shop">
       POGLEDAJ PONUDU ↗
     </a>
-
   </div>
 
   <div class="hero-img">
-    <img
-      src="/chic-logo.svg"
-      class="main-logo"
-      alt="Chic.rs"
-    >
+    <img src="/chic-logo.svg" class="main-logo" alt="Chic.rs">
   </div>
-
 </section>
-
 
 <div class="ticker">
 CHIC.RS ★ SNEAKERS ★ STREETWEAR ★ ONLINE SHOP ★
 CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 </div>
 
-
 <section class="section" id="shop">
 
   <div class="section-head">
 
     <div>
-
-      <p class="eyebrow">
-        ONLINE PONUDA
-      </p>
-
-      <h2>
-        SHOP <span>/ CHIC.RS</span>
-      </h2>
-
+      <p class="eyebrow">ONLINE PONUDA</p>
+      <h2>SHOP <span>/ CHIC.RS</span></h2>
     </div>
 
     <div class="tabs">
-
-      <button
-        class="active"
-        data-filter="all"
-      >
-        SVE
-      </button>
-
-      <button data-filter="patike">
-        PATIKE
-      </button>
-
-      <button data-filter="garderoba">
-        GARDEROBA
-      </button>
-
+      <button class="active" data-filter="all">SVE</button>
+      <button data-filter="patike">PATIKE</button>
+      <button data-filter="garderoba">GARDEROBA</button>
     </div>
 
   </div>
-
 
   <div class="shop-tools">
 
@@ -146,56 +94,25 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
     >
 
     <select id="availability">
-
-      <option value="all">
-        Svi proizvodi
-      </option>
-
-      <option value="available">
-        Dostupni
-      </option>
-
-      <option value="sold">
-        Rasprodati
-      </option>
-
+      <option value="all">Svi proizvodi</option>
+      <option value="available">Dostupni</option>
+      <option value="sold">Rasprodati</option>
     </select>
 
-
     <select id="sort">
-
-      <option value="position">
-        Pozicija
-      </option>
-
-      <option value="new">
-        Najnovije
-      </option>
-
-      <option value="low">
-        Najniža cena
-      </option>
-
-      <option value="high">
-        Najviša cena
-      </option>
-
+      <option value="position">Pozicija</option>
+      <option value="new">Najnovije</option>
+      <option value="low">Najniža cena</option>
+      <option value="high">Najviša cena</option>
     </select>
 
   </div>
 
-
   <div class="filter-row">
 
-    <input
-      id="brandFilter"
-      placeholder="Brend"
-    >
+    <input id="brandFilter" placeholder="Brend">
 
-    <input
-      id="sizeFilter"
-      placeholder="Veličina"
-    >
+    <input id="sizeFilter" placeholder="Veličina">
 
     <input
       id="minPrice"
@@ -209,40 +126,27 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
       placeholder="Max. cena"
     >
 
-    <button onclick="resetFilters()">
-      RESET
-    </button>
+    <button onclick="resetFilters()">RESET</button>
 
   </div>
 
-
   <p class="muted" id="resultCount"></p>
 
-
   <div class="grid" id="products">
-
-    <p class="muted">
-      Učitavanje ponude...
-    </p>
-
+    <p class="muted">Učitavanje ponude...</p>
   </div>
 
 </section>
 
-
 <section class="banner">
 
   <div>
-
-    <p class="eyebrow">
-      CHIC COMMUNITY
-    </p>
+    <p class="eyebrow">CHIC COMMUNITY</p>
 
     <h2>
       FOLLOW<br>
       <span>@CHIC._RS</span>
     </h2>
-
   </div>
 
   <a
@@ -256,21 +160,16 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
 </section>
 
-
 <section class="two" id="about">
 
   <div>
-
-    <p class="eyebrow">
-      O NAMA
-    </p>
+    <p class="eyebrow">O NAMA</p>
 
     <h2>
       URBAN.<br>
       ČISTO.<br>
       CHIC.
     </h2>
-
   </div>
 
   <p>
@@ -280,20 +179,15 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
 </section>
 
-
 <section class="two contact" id="contact">
 
   <div>
-
-    <p class="eyebrow">
-      KONTAKT
-    </p>
+    <p class="eyebrow">KONTAKT</p>
 
     <h2>
       IMAŠ<br>
       PITANJE?
     </h2>
-
   </div>
 
   <div>
@@ -318,17 +212,10 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
 </main>
 
-
 <footer>
 
-  <a
-    class="logo small-logo"
-    href="#home"
-  >
-    <img
-      src="/chic-logo.svg"
-      alt="CHIC.RS"
-    >
+  <a class="logo small-logo" href="#home">
+    <img src="/chic-logo.svg" alt="CHIC.RS">
   </a>
 
   <span>
@@ -348,19 +235,11 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
   <div class="product-detail">
 
-    <button
-      class="close"
-      onclick="closeProduct()"
-    >
-      ×
-    </button>
+    <button class="close" onclick="closeProduct()">×</button>
 
     <div class="detail-photo">
 
-      <img
-        id="detailImage"
-        alt=""
-      >
+      <img id="detailImage" alt="">
 
       <button
         class="gallery-arrow prev"
@@ -388,20 +267,13 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
     </div>
 
-
     <div class="detail-copy">
 
-      <p
-        class="eyebrow"
-        id="detailBrand"
-      ></p>
+      <p class="eyebrow" id="detailBrand"></p>
 
       <h2 id="detailName"></h2>
 
-      <p
-        class="muted"
-        id="detailDesc"
-      ></p>
+      <p class="muted" id="detailDesc"></p>
 
       <h3 id="detailPrice"></h3>
 
@@ -467,25 +339,13 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
     <div class="summary">
 
-      <span>
-        MEĐUZBIR
-      </span>
+      <span>MEĐUZBIR</span>
+      <b id="sub">0 RSD</b>
 
-      <b id="sub">
-        0 RSD
-      </b>
+      <span>DOSTAVA</span>
+      <b>680 RSD</b>
 
-      <span>
-        DOSTAVA
-      </span>
-
-      <b>
-        680 RSD
-      </b>
-
-      <strong>
-        UKUPNO
-      </strong>
+      <strong>UKUPNO</strong>
 
       <strong id="total">
         680 RSD
@@ -510,7 +370,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 <div
   class="modal"
   id="checkoutModal"
-  onclick="if(event.target===this)closeCheckout()"
 >
 
   <div class="checkout">
@@ -532,6 +391,7 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
     <div id="preview"></div>
 
+    <!-- NETLIFY FORMA -->
 
     <form
       name="chic-orders"
@@ -564,80 +424,58 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
         id="amount"
       >
 
-
       <div class="row">
 
         <label>
           Ime i prezime
-
           <input
             name="ime_prezime"
             required
           >
-
         </label>
-
 
         <label>
           Telefon
-
           <input
             name="telefon"
-            type="tel"
             required
           >
-
         </label>
 
       </div>
-
 
       <div class="row">
 
         <label>
           Grad
-
           <input
             name="grad"
             required
           >
-
         </label>
-
 
         <label>
           Poštanski broj
-
           <input
             name="postanski_broj"
             required
           >
-
         </label>
 
       </div>
 
-
       <label>
         Adresa i broj
-
         <input
           name="adresa"
           required
         >
-
       </label>
-
 
       <label>
         Napomena
-
-        <textarea
-          name="napomena"
-        ></textarea>
-
+        <textarea name="napomena"></textarea>
       </label>
-
 
       <div class="payment">
 
@@ -650,7 +488,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
         </small>
 
       </div>
-
 
       <label class="agree">
 
@@ -666,21 +503,13 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </label>
 
-
       <button
         type="submit"
         class="primary full"
-        id="orderSubmit"
+        id="submitOrder"
       >
         POŠALJI PORUDŽBINU →
       </button>
-
-
-      <p
-        id="orderMessage"
-        class="muted"
-        style="margin-top:15px;text-align:center"
-      ></p>
 
     </form>
 
@@ -762,7 +591,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </div>
 
-
       <div class="admin-actions">
 
         <button
@@ -783,18 +611,15 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
     </div>
 
-
     <div
       class="admin-stats"
       id="adminStats"
     ></div>
 
-
     <p class="notice">
       Ovde možeš da dodaš cenu, veličine, kategoriju,
       brend, dostupnost, broj komada, poziciju i više slika.
     </p>
-
 
     <div id="adminList"></div>
 
@@ -822,28 +647,21 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
         NOVI PROIZVOD
       </h3>
 
-
       <label>
         Naziv proizvoda
-
         <input id="pName">
-
       </label>
-
 
       <div class="row">
 
         <label>
           Cena (RSD)
-
           <input
             id="pPrice"
             type="number"
             min="1"
           >
-
         </label>
-
 
         <label>
           Kategorija
@@ -864,7 +682,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </div>
 
-
       <div class="row">
 
         <label>
@@ -876,7 +693,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
           >
 
         </label>
-
 
         <label>
           Status
@@ -897,7 +713,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </div>
 
-
       <div class="row">
 
         <label>
@@ -911,7 +726,6 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
           >
 
         </label>
-
 
         <label>
           Pozicija
@@ -931,14 +745,10 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </div>
 
-
       <label>
         Opis proizvoda
-
         <textarea id="pDesc"></textarea>
-
       </label>
-
 
       <label>
         Oznaka
@@ -947,9 +757,7 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
           id="pBadge"
           placeholder="NEW / BESTSELLER / AKCIJA"
         >
-
       </label>
-
 
       <label>
         Veličine — odvoji zarezom
@@ -958,12 +766,9 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
           id="pSizes"
           placeholder="40,41,42,43,44,45"
         >
-
       </label>
 
-
       <label>
-
         Dodaj više slika
 
         <input
@@ -972,9 +777,7 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
           accept="image/*"
           multiple
         >
-
       </label>
-
 
       <div class="file-note">
         Možeš izabrati više slika odjednom.
@@ -983,18 +786,15 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
         × briše.
       </div>
 
-
       <div
         id="imagePreview"
         class="manage-images"
       ></div>
 
-
       <div
         class="file-note"
         id="imagePreviewNote"
       ></div>
-
 
       <div class="form-actions">
 
@@ -1046,8 +846,6 @@ let detailIndex = 0;
 
 let selectedSize = "";
 
-const quickIndexes = {};
-
 
 const $ = id =>
   document.getElementById(id);
@@ -1055,7 +853,7 @@ const $ = id =>
 
 const money = n =>
   new Intl.NumberFormat("sr-RS")
-    .format(Number(n) || 0) + " RSD";
+    .format(n) + " RSD";
 
 
 const esc = v =>
@@ -1089,60 +887,70 @@ function getImages(p) {
 }
 
 
+/* =========================
+   PRODUCTS
+========================= */
+
 async function loadProducts() {
 
   try {
 
     const r =
-      await fetch("/api/products", {
-        cache: "no-store"
-      });
+      await fetch("/api/products");
 
-    if (!r.ok)
+    if (!r.ok) {
       throw new Error("products");
-
-    const data =
-      await r.json();
+    }
 
     products =
-      Array.isArray(data)
-        ? data
-        : [];
+      await r.json();
+
+    if (!Array.isArray(products)) {
+      products = [];
+    }
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Greška pri učitavanju proizvoda:",
+      error
+    );
 
     products = [];
 
   }
 
   renderProducts();
+
   renderAdmin();
+
   renderCart();
 
 }
 
 
+/* =========================
+   SHOP
+========================= */
+
 function renderProducts() {
 
   const q =
-    ($("search").value || "")
+    $("search").value
       .toLowerCase();
 
   const b =
-    ($("brandFilter").value || "")
+    $("brandFilter").value
       .toLowerCase();
 
   const s =
-    ($("sizeFilter").value || "")
-      .trim();
+    $("sizeFilter").value.trim();
 
   const mi =
-    Number($("minPrice").value) || 0;
+    +$("minPrice").value || 0;
 
   const ma =
-    Number($("maxPrice").value) ||
+    +$("maxPrice").value ||
     Infinity;
 
   const a =
@@ -1150,71 +958,66 @@ function renderProducts() {
 
 
   let list =
-    products.filter(p => {
+    products.filter(p =>
 
-      const categoryOK =
+      (
         filter === "all" ||
-        p.category === filter;
+        p.category === filter
+      )
 
+      &&
 
-      const searchOK =
+      (
         !q ||
-        String(p.name || "")
+        String(p.name)
           .toLowerCase()
           .includes(q) ||
 
         String(p.brand || "")
           .toLowerCase()
-          .includes(q);
+          .includes(q)
+      )
 
+      &&
 
-      const brandOK =
+      (
         !b ||
         String(p.brand || "")
           .toLowerCase()
-          .includes(b);
+          .includes(b)
+      )
 
+      &&
 
-      const sizeOK =
+      (
         !s ||
         (p.sizes || [])
           .map(String)
-          .includes(s);
+          .includes(s)
+      )
 
+      &&
 
-      const priceOK =
-        Number(p.price) >= mi &&
-        Number(p.price) <= ma;
+      Number(p.price) >= mi &&
+      Number(p.price) <= ma
 
+      &&
 
-      const available =
-        Number(p.stock) > 0;
-
-
-      const availabilityOK =
+      (
         a === "all" ||
 
         (
           a === "available" &&
-          available
+          Number(p.stock) > 0
         ) ||
 
         (
           a === "sold" &&
-          !available
-        );
+          Number(p.stock) <= 0
+        )
+      )
 
-
-      return (
-        categoryOK &&
-        searchOK &&
-        brandOK &&
-        sizeOK &&
-        priceOK &&
-        availabilityOK
-      );
-
-    });
+    );
 
 
   if ($("sort").value === "new") {
@@ -1268,34 +1071,27 @@ function renderProducts() {
   }
 
 
-  $("resultCount").textContent =
-    list.length + " proizvoda";
-
-
-  if (!list.length) {
-
-    $("products").innerHTML = `
-      <p class="muted">
-        Nema proizvoda za izabrane filtere.
-      </p>
-    `;
-
-    return;
-
-  }
+  $("resultCount")
+    .textContent =
+      list.length +
+      " proizvoda";
 
 
   $("products").innerHTML =
-    list.map(p => {
+    list.length
 
-      const ims =
-        getImages(p);
+      ?
 
-      const sold =
-        Number(p.stock) <= 0;
+      list.map(p => {
+
+        const ims =
+          getImages(p);
+
+        const sold =
+          Number(p.stock) <= 0;
 
 
-      return `
+        return `
 
 <article
   class="product"
@@ -1369,7 +1165,9 @@ ${esc(p.badge)}
   ""
 }
 
-<em class="${sold ? "out" : ""}">
+<em
+  class="${sold ? "out" : ""}"
+>
 ${
   sold
     ? "RASPRODATO"
@@ -1401,7 +1199,7 @@ ${p.category === "patike"
 </div>
 
 <b>
-${money(p.price)}
+${money(Number(p.price) || 0)}
 </b>
 
 </div>
@@ -1411,26 +1209,22 @@ ${money(p.price)}
 
 ${
   (p.sizes || [])
-    .map(x => {
+    .map(x =>
 
-      const safeSize =
-        String(x)
-          .replace(/'/g, "\\'");
-
-      return `
+      `
 
 <button
   onclick="
     event.stopPropagation();
-    add(${Number(p.id)},'${safeSize}')
+    add(${Number(p.id)},'${esc(x)}')
   "
 >
 ${esc(x)}
 </button>
 
-`;
+`
 
-    })
+    )
     .join("")
 }
 
@@ -1440,9 +1234,20 @@ ${esc(x)}
 
 `;
 
-    }).join("");
+      }).join("")
+
+      :
+
+      `
+<p class="muted">
+Nema proizvoda za izabrane filtere.
+</p>
+`;
 
 }
+
+
+const quickIndexes = {};
 
 
 function quickImage(id, d) {
@@ -1471,26 +1276,10 @@ function quickImage(id, d) {
     ims.length;
 
 
-  const cards =
-    document.querySelectorAll(".product");
-
-
-  let card = null;
-
-  cards.forEach(x => {
-
-    const handler =
-      x.getAttribute("onclick") || "";
-
-    if (
-      handler.includes(
-        `openProduct(${id})`
-      )
-    ) {
-      card = x;
-    }
-
-  });
+  const card =
+    document.querySelector(
+      `.product[onclick="openProduct(${Number(id)})"]`
+    );
 
 
   if (card) {
@@ -1499,12 +1288,10 @@ function quickImage(id, d) {
       card.querySelector(".photo img");
 
     if (image) {
-
       image.src =
         ims[
           quickIndexes[id]
         ];
-
     }
 
   }
@@ -1516,18 +1303,25 @@ function quickImage(id, d) {
   if (counter) {
 
     counter.textContent =
-      `${quickIndexes[id] + 1} / ${ims.length}`;
+      `${
+        quickIndexes[id] + 1
+      } / ${ims.length}`;
 
   }
 
 }
 
 
+/* =========================
+   PRODUCT DETAIL
+========================= */
+
 function openProduct(id) {
 
   detailProduct =
     products.find(
-      x => Number(x.id) === Number(id)
+      x =>
+        Number(x.id) === Number(id)
     );
 
   if (!detailProduct)
@@ -1565,7 +1359,9 @@ function renderDetail() {
   $("detailCounter")
     .textContent =
       ims.length
-        ? `${detailIndex + 1} / ${ims.length}`
+        ? `${
+            detailIndex + 1
+          } / ${ims.length}`
         : "";
 
 
@@ -1577,7 +1373,7 @@ function renderDetail() {
 
   $("detailName")
     .textContent =
-      p.name || "";
+      p.name;
 
 
   $("detailDesc")
@@ -1588,13 +1384,13 @@ function renderDetail() {
 
   $("detailPrice")
     .textContent =
-      money(p.price);
+      money(Number(p.price) || 0);
 
 
   $("detailStock")
     .textContent =
       Number(p.stock) > 0
-        ? `Dostupno: ${p.stock} kom.`
+        ? `Dostupno: ${Number(p.stock)} kom.`
         : "Rasprodato";
 
 
@@ -1602,7 +1398,9 @@ function renderDetail() {
     .innerHTML =
       ims
         .map(
-          (x, n) => `
+          (x, n) =>
+
+          `
 
 <button
   class="${
@@ -1624,6 +1422,7 @@ function renderDetail() {
 </button>
 
 `
+
         )
         .join("");
 
@@ -1631,13 +1430,10 @@ function renderDetail() {
   $("detailSizes")
     .innerHTML =
       (p.sizes || [])
-        .map(s => {
+        .map(
+          s =>
 
-          const safeSize =
-            String(s)
-              .replace(/'/g, "\\'");
-
-          return `
+          `
 
 <button
   class="${
@@ -1646,16 +1442,16 @@ function renderDetail() {
       : ""
   }"
   onclick="
-    selectedSize='${safeSize}';
+    selectedSize='${esc(s)}';
     renderDetail()
   "
 >
 ${esc(s)}
 </button>
 
-`;
+`
 
-        })
+        )
         .join("");
 
 
@@ -1688,7 +1484,6 @@ function changeDetail(d) {
   if (!ims.length)
     return;
 
-
   detailIndex =
     (
       detailIndex +
@@ -1697,7 +1492,6 @@ function changeDetail(d) {
     )
     %
     ims.length;
-
 
   renderDetail();
 
@@ -1712,15 +1506,22 @@ function closeProduct() {
 }
 
 
+/* =========================
+   CART
+========================= */
+
 function add(id, size) {
 
   const p =
     products.find(
-      x => Number(x.id) === Number(id)
+      x =>
+        Number(x.id) === Number(id)
     );
 
-
-  if (!p || Number(p.stock) <= 0) {
+  if (
+    !p ||
+    Number(p.stock) <= 0
+  ) {
 
     alert(
       "Proizvod trenutno nije dostupan."
@@ -1731,15 +1532,15 @@ function add(id, size) {
   }
 
 
-  const selected =
-    String(size ?? "");
+  const chosenSize =
+    String(size || "");
 
 
   const e =
     cart.find(
       x =>
         Number(x.id) === Number(id) &&
-        String(x.size) === selected
+        String(x.size) === chosenSize
     );
 
 
@@ -1764,7 +1565,7 @@ function add(id, size) {
 
     cart.push({
       id: Number(id),
-      size: selected,
+      size: chosenSize,
       qty: 1
     });
 
@@ -1775,7 +1576,6 @@ function add(id, size) {
     "chicCart",
     JSON.stringify(cart)
   );
-
 
   renderCart();
 
@@ -1808,12 +1608,11 @@ function renderCart() {
                   Number(x.id)
               );
 
+            return p
 
-            if (!p)
-              return "";
+              ?
 
-
-            return `
+              `
 
 <div class="cartrow">
 
@@ -1856,9 +1655,14 @@ ${money(
 
 </div>
 
-`;
+`
+
+              :
+
+              "";
 
           }
+
         )
         .join("")
 
@@ -1940,6 +1744,10 @@ function closeCart() {
 }
 
 
+/* =========================
+   CHECKOUT
+========================= */
+
 function checkout() {
 
   if (!cart.length) {
@@ -1996,10 +1804,11 @@ function checkout() {
                 Number(x.id)
             );
 
-          if (!p)
-            return "";
+          return p
 
-          return `
+            ?
+
+            `
 
 <div class="previewrow">
 
@@ -2020,7 +1829,11 @@ ${money(
 
 </div>
 
-`;
+`
+
+            :
+
+            "";
 
         })
         .join("")
@@ -2067,13 +1880,18 @@ ${money(total)}
               Number(x.id)
           );
 
-        if (!p)
-          return "";
+        return p
 
-        return `${p.name} | veličina ${x.size} | količina ${x.qty} | ${money(
-          Number(p.price) *
-          Number(x.qty)
-        )}`;
+          ?
+
+          `${p.name} | veličina ${x.size} | količina ${Number(x.qty)} | ${money(
+            Number(p.price) *
+            Number(x.qty)
+          )}`
+
+          :
+
+          "";
 
       })
       .filter(Boolean)
@@ -2082,9 +1900,6 @@ ${money(total)}
 
   $("amount").value =
     money(total);
-
-
-  $("orderMessage").textContent = "";
 
 
   $("checkoutModal")
@@ -2101,6 +1916,152 @@ function closeCheckout() {
 }
 
 
+/* =========================
+   NETLIFY ORDER SUBMIT
+========================= */
+
+const orderForm =
+  $("orderForm");
+
+
+if (orderForm) {
+
+  orderForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const button =
+        $("submitOrder");
+
+
+      if (button) {
+
+        button.disabled = true;
+
+        button.textContent =
+          "SLANJE PORUDŽBINE...";
+
+      }
+
+
+      try {
+
+        /*
+          Netlify Forms očekuje
+          URL encoded POST.
+        */
+
+        const formData =
+          new FormData(orderForm);
+
+
+        const body =
+          new URLSearchParams();
+
+
+        for (
+          const [key, value]
+          of formData.entries()
+        ) {
+
+          body.append(
+            key,
+            String(value)
+          );
+
+        }
+
+
+        const response =
+          await fetch(
+            "/",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded"
+              },
+
+              body:
+                body.toString()
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Netlify forma nije prihvaćena."
+          );
+
+        }
+
+
+        /*
+          USPEŠNA PORUDŽBINA
+        */
+
+        alert(
+          "Porudžbina je uspešno poslata! Hvala na kupovini."
+        );
+
+
+        cart = [];
+
+        localStorage.removeItem(
+          "chicCart"
+        );
+
+
+        renderCart();
+
+
+        orderForm.reset();
+
+
+        closeCheckout();
+
+
+      } catch (error) {
+
+        console.error(
+          "Greška pri slanju porudžbine:",
+          error
+        );
+
+
+        alert(
+          "Greška pri poručivanju proizvoda. Pokušaj ponovo."
+        );
+
+
+      } finally {
+
+        if (button) {
+
+          button.disabled = false;
+
+          button.textContent =
+            "POŠALJI PORUDŽBINU →";
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   ADMIN
+========================= */
+
 function openAdmin() {
 
   $("loginError")
@@ -2112,11 +2073,8 @@ function openAdmin() {
   $("loginModal")
     .classList.add("show");
 
-  setTimeout(
-    () =>
-      $("adminPassword").focus(),
-    100
-  );
+  $("adminPassword")
+    .focus();
 
 }
 
@@ -2137,7 +2095,6 @@ async function loginAdmin() {
       await fetch(
         "/api/admin/login",
         {
-
           method: "POST",
 
           headers: {
@@ -2180,7 +2137,7 @@ async function loginAdmin() {
 
     $("loginError")
       .textContent =
-        "Greška pri povezivanju.";
+        "Greška pri prijavljivanju.";
 
   }
 
@@ -2213,22 +2170,6 @@ async function logoutAdmin() {
 
 function renderAdmin() {
 
-  const list =
-    [...products]
-      .sort(
-        (a, b) =>
-          (
-            Number(a.sortOrder || 0) -
-            Number(b.sortOrder || 0)
-          )
-          ||
-          (
-            Number(a.id) -
-            Number(b.id)
-          )
-      );
-
-
   $("adminStats")
     .innerHTML = `
 
@@ -2255,12 +2196,30 @@ komada
 `;
 
 
+  const list =
+    [...products]
+      .sort(
+        (a, b) =>
+          (
+            Number(a.sortOrder || 0) -
+            Number(b.sortOrder || 0)
+          )
+          ||
+          (
+            Number(a.id) -
+            Number(b.id)
+          )
+      );
+
+
   $("adminList")
     .innerHTML =
 
       list
         .map(
-          p => `
+          p =>
+
+          `
 
 <div class="admin-item">
 
@@ -2280,7 +2239,7 @@ ${esc(p.name)}
 
 <small>
 
-${money(p.price)}
+${money(Number(p.price) || 0)}
 ·
 ${esc(
   p.brand ||
@@ -2333,6 +2292,7 @@ OBRIŠI
 </div>
 
 `
+
         )
         .join("")
 
@@ -2346,6 +2306,10 @@ Još nema proizvoda.
 
 }
 
+
+/* =========================
+   PRODUCT EDITOR
+========================= */
 
 function newProduct() {
 
@@ -2390,8 +2354,7 @@ function newProduct() {
 
 
   $("pStock")
-    .value =
-      0;
+    .value = 0;
 
 
   $("pOrder")
@@ -2412,7 +2375,8 @@ function editProduct(id) {
 
   const p =
     products.find(
-      x => Number(x.id) === Number(id)
+      x =>
+        Number(x.id) === Number(id)
     );
 
   if (!p)
@@ -2510,6 +2474,10 @@ function hideEditor() {
 }
 
 
+/* =========================
+   IMAGE UPLOAD
+========================= */
+
 $("pImageFile")
   .addEventListener(
     "change",
@@ -2520,19 +2488,22 @@ $("pImageFile")
         [...e.target.files]
       ) {
 
-        const r =
+        const reader =
           new FileReader();
 
 
-        r.onload = () => {
+        reader.onload = () => {
 
           pendingFiles.push({
+
             file,
+
             data:
               String(
-                r.result
+                reader.result
               )
               .split(",")[1]
+
           });
 
 
@@ -2545,7 +2516,7 @@ $("pImageFile")
         };
 
 
-        r.readAsDataURL(file);
+        reader.readAsDataURL(file);
 
       }
 
@@ -2559,7 +2530,9 @@ function renderImageManager() {
     .innerHTML =
       editorImages
         .map(
-          (src, i) => `
+          (src, i) =>
+
+          `
 
 <div class="managed-image">
 
@@ -2609,6 +2582,7 @@ ${
 </div>
 
 `
+
         )
         .join("");
 
@@ -2745,8 +2719,13 @@ async function uploadPending() {
       );
 
 
-    if (!r.ok)
-      throw new Error("upload");
+    if (!r.ok) {
+
+      throw new Error(
+        "upload"
+      );
+
+    }
 
 
     const d =
@@ -2766,6 +2745,10 @@ async function uploadPending() {
 
 }
 
+
+/* =========================
+   SAVE PRODUCT
+========================= */
 
 async function saveProduct() {
 
@@ -2976,13 +2959,17 @@ async function saveProduct() {
     console.error(error);
 
     alert(
-      "Greška pri povezivanju sa serverom."
+      "Greška pri čuvanju proizvoda."
     );
 
   }
 
 }
 
+
+/* =========================
+   DELETE
+========================= */
 
 async function deleteProduct(id) {
 
@@ -3021,13 +3008,17 @@ async function deleteProduct(id) {
     console.error(error);
 
     alert(
-      "Greška pri povezivanju."
+      "Greška pri brisanju proizvoda."
     );
 
   }
 
 }
 
+
+/* =========================
+   MOVE PRODUCTS
+========================= */
 
 async function moveProduct(id, d) {
 
@@ -3050,8 +3041,7 @@ async function moveProduct(id, d) {
   const i =
     list.findIndex(
       p =>
-        Number(p.id) ===
-        Number(id)
+        Number(p.id) === Number(id)
     );
 
 
@@ -3091,35 +3081,12 @@ async function moveProduct(id, d) {
           body:
             JSON.stringify({
 
-              name:
-                p.name,
+              ...p,
 
-              price:
-                p.price,
-
-              category:
-                p.category,
-
-              description:
-                p.description || "",
-
-              brand:
-                p.brand || "",
-
-              stock:
-                p.stock || 0,
-
-              sortOrder:
-                o,
-
-              sizes:
-                p.sizes || [],
-
-              badge:
-                p.badge || "",
+              sortOrder: o,
 
               image:
-                getImages(p)[0] || "",
+                getImages(p)[0],
 
               images:
                 getImages(p)
@@ -3137,12 +3104,12 @@ async function moveProduct(id, d) {
 
       update(
         a,
-        Number(b.sortOrder || 0)
+        b.sortOrder
       ),
 
       update(
         b,
-        Number(a.sortOrder || 0)
+        a.sortOrder
       )
 
     ]);
@@ -3162,6 +3129,10 @@ async function moveProduct(id, d) {
 
 }
 
+
+/* =========================
+   FILTERS
+========================= */
 
 function resetFilters() {
 
@@ -3257,144 +3228,9 @@ document
 );
 
 
-/*
-=================================================
-NETLIFY CHECKOUT
-=================================================
-*/
-
-const orderForm =
-  $("orderForm");
-
-
-if (orderForm) {
-
-  orderForm.addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-
-      const button =
-        $("orderSubmit");
-
-      const message =
-        $("orderMessage");
-
-
-      button.disabled = true;
-
-      button.textContent =
-        "SLANJE...";
-
-      message.textContent =
-        "";
-
-
-      try {
-
-        const formData =
-          new FormData(orderForm);
-
-
-        formData.set(
-          "form-name",
-          "chic-orders"
-        );
-
-
-        const response =
-          await fetch(
-            "/",
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded"
-              },
-
-              body:
-                new URLSearchParams(
-                  formData
-                ).toString()
-
-            }
-          );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Netlify forma nije prihvatila porudžbinu."
-          );
-
-        }
-
-
-        message.textContent =
-          "Porudžbina je uspešno poslata!";
-
-
-        message.style.color =
-          "green";
-
-
-        cart = [];
-
-
-        localStorage.setItem(
-          "chicCart",
-          JSON.stringify(cart)
-        );
-
-
-        renderCart();
-
-
-        orderForm.reset();
-
-
-        setTimeout(
-          () => {
-
-            closeCheckout();
-
-            message.textContent = "";
-
-          },
-          1800
-        );
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        message.textContent =
-          "Greška pri slanju porudžbine. Pokušaj ponovo.";
-
-
-        message.style.color =
-          "red";
-
-      } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-          "POŠALJI PORUDŽBINU →";
-
-      }
-
-    }
-  );
-
-}
-
+/* =========================
+   START
+========================= */
 
 loadProducts();
 
