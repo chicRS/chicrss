@@ -23,7 +23,7 @@
   <div><p class="eyebrow">CHIC.RS / STREETWEAR</p><h1>WEAR<br><span>YOUR</span><br>ATTITUDE.</h1>
   <p class="desc">Patike i garderoba za svakodnevni streetwear. Izaberi model, veličinu i poruči online.</p>
   <a class="primary" href="#shop">POGLEDAJ PONUDU ↗</a></div>
-  <div class="hero-img"><div class="hero-carousel" id="heroCarousel"><div class="hero-slides" id="heroSlides"></div><button class="hero-arrow hero-prev" onclick="heroMove(-1)" aria-label="Prethodna slika">‹</button><button class="hero-arrow hero-next" onclick="heroMove(1)" aria-label="Sledeća slika">›</button><div class="hero-dots" id="heroDots"></div></div></div>
+  <div class="hero-img"><img src="assets/logo.png" alt="Chic.rs" class="main-logo"></div>
 </section>
 <div class="ticker">CHIC.RS ★ SNEAKERS ★ STREETWEAR ★ ONLINE SHOP ★ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★</div>
 
@@ -65,13 +65,10 @@
 
 <script>
 const SHIPPING=680;
-let products=[],heroItems=[],heroIndex=0,heroTimer=null,cart=JSON.parse(localStorage.getItem("chicCart")||"[]"),filter="all",editId=null,editorImages=[],detailProduct=null,detailIndex=0,pendingFiles=[],selectedDetailSize="";
+let products=[],cart=JSON.parse(localStorage.getItem("chicCart")||"[]"),filter="all",editId=null,editorImages=[],detailProduct=null,detailIndex=0,pendingFiles=[],selectedDetailSize="";
 const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat("sr-RS").format(n)+" RSD";
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function getImages(p){return Array.isArray(p.images)&&p.images.length?p.images:(p.image?[p.image]:[])}
-function renderHeroCarousel(){const slides=$("heroSlides"),dots=$("heroDots");if(!slides)return;const items=[{src:"/assets/logo.png",title:"CHIC.RS",type:"logo"},{src:"/assets/profile.png",title:"CHIC.RS",type:"profile"}];products.forEach(p=>{const src=getImages(p)[0];if(src)items.push({src,title:p.name,type:"product",productId:p.id})});heroItems=items;slides.innerHTML=items.map((x,i)=>`<div class="hero-slide ${i===heroIndex?"active":""}"><img src="${esc(x.src)}" alt="${esc(x.title)}" onerror="this.src='/assets/logo.png'"><div class="hero-caption"><span>${x.type==="product"?"PROIZVOD":"CHIC.RS"}</span><b>${esc(x.title)}</b>${x.productId?`<button onclick="openProduct(${x.productId})">POGLEDAJ ↗</button>`:""}</div></div>`).join("");dots.innerHTML=items.map((_,i)=>`<button class="${i===heroIndex?"active":""}" onclick="heroGo(${i})" aria-label="Slika ${i+1}"></button>`).join("");heroIndex=Math.min(heroIndex,items.length-1);heroGo(heroIndex);if(heroTimer)clearInterval(heroTimer);heroTimer=setInterval(()=>heroMove(1),4500)}
-function heroGo(i){if(!heroItems.length)return;heroIndex=(i+heroItems.length)%heroItems.length;document.querySelectorAll(".hero-slide").forEach((el,n)=>el.classList.toggle("active",n===heroIndex));document.querySelectorAll(".hero-dots button").forEach((el,n)=>el.classList.toggle("active",n===heroIndex))}
-function heroMove(d){heroGo(heroIndex+d)}
 async function loadProducts(){try{const r=await fetch("/api/products");if(!r.ok)throw 0;products=await r.json()}catch(e){products=[]}$("products").innerHTML="";renderProducts();renderAdmin();renderHeroCarousel()}
 function renderProducts(){
  let q=$("search").value.toLowerCase(),b=$("brandFilter").value.toLowerCase(),s=$("sizeFilter").value.trim(),mi=+$("minPrice").value||0,ma=+$("maxPrice").value||Infinity,a=$("availability").value;
