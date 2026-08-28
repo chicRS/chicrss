@@ -37,15 +37,54 @@ async function saveProducts(products: Product[]) {
   await store().set(KEY, JSON.stringify(products));
 }
 
+function getId(
+  req: Request,
+  context: { params: Record<string, string> }
+): number | null {
+  // Prvo pokušaj /api/products/:id
+  const paramId = context.params?.id;
+
+  if (paramId !== undefined && paramId !== "") {
+    const n = Number(paramId);
+
+    if (Number.isInteger(n) && n > 0) {
+      return n;
+    }
+  }
+
+  // Zatim pokušaj ?id=123
+  try {
+    const url = new URL(req.url);
+    const queryId = url.searchParams.get("id");
+
+    if (queryId) {
+      const n = Number(queryId);
+
+      if (Number.isInteger(n) && n > 0) {
+        return n;
+      }
+    }
+  } catch {
+    // ignorisanje greške URL-a
+  }
+
+  return null;
+}
+
 function normalize(body: any, id: number): Product | null {
   const images = Array.isArray(body.images)
-    ? body.images.filter(Boolean).map(String)
+    ? body.images
+        .filter(Boolean)
+        .map(String)
     : body.image
       ? [String(body.image)]
       : [];
 
   const sizes = Array.isArray(body.sizes)
-    ? body.sizes.map(String).filter(Boolean)
+    ? body.sizes
+        .map(String)
+        .map(s => s.trim())
+        .filter(Boolean)
     : String(body.sizes || "")
         .split(",")
         .map(s => s.trim())
@@ -58,7 +97,10 @@ function normalize(body: any, id: number): Product | null {
     category: String(body.category || "").trim(),
     description: String(body.description || "").trim(),
     brand: String(body.brand || "").trim(),
-    stock: Math.max(0, Number(body.stock || 0)),
+    stock: Math.max(
+      0,
+      Number(body.stock || 0)
+    ),
     sortOrder: Number(body.sortOrder || 0),
     sizes,
     badge: String(body.badge || "").trim(),
@@ -81,45 +123,59 @@ function normalize(body: any, id: number): Product | null {
 
 export default async (
   req: Request,
-  context: { params: Record<string, string> }
+  context: {
+    params: Record<string, string>;
+  }
 ) => {
   try {
     const method = req.method.toUpperCase();
-    const id = context.params?.id
-      ? Number(context.params.id)
-      : null;
 
-    // JAVNO — učitavanje proizvoda
+    // =========================
+    // JAVNO UČITAVANJE PROIZVODA
+    // =========================
+
     if (method === "GET") {
       const products = await readProducts();
 
       products.sort(
         (a, b) =>
-          a.sortOrder - b.sortOrder ||
-          a.id - b.id
+          Number(a.sortOrder || 0) -
+            Number(b.sortOrder || 0) ||
+          Number(a.id) - Number(b.id)
       );
 
       return Response.json(products);
     }
 
-    // ADMIN
+    // =========================
+    // ADMIN PROVERA
+    // =========================
+
     if (!isAuthorized(req)) {
       return unauthorized();
     }
 
     const products = await readProducts();
 
+    // =========================
     // NOVI PROIZVOD
+    // =========================
+
     if (method === "POST") {
       const body = await req.json();
 
       const nextId =
         products.reduce(
-          (max, p) => Math.max(max, Number(p.id) || 0),
+          (max, p) =>
+            Math.max(
+              max,
+              Number(p.id) || 0
+            ),
           0
         ) + 1;
 
-      const product = normalize(body, nextId);
+      const product =
+        normalize(body, nextId);
 
       if (!product) {
         return Response.json(
@@ -135,34 +191,48 @@ export default async (
 
       await saveProducts(products);
 
-      return Response.json(product, {
-        status: 201
-      });
+      return Response.json(
+        product,
+        { status: 201 }
+      );
     }
 
-    // IZMENA
+    // =========================
+    // IZMENA PROIZVODA
+    // =========================
+
     if (method === "PUT") {
-      if (!id || !Number.isInteger(id)) {
+      const id = getId(req, context);
+
+      if (id === null) {
         return Response.json(
-          { error: "Nedostaje ispravan ID." },
+          {
+            error:
+              "Nedostaje ispravan ID."
+          },
           { status: 400 }
         );
       }
 
-      const index = products.findIndex(
-        p => p.id === id
-      );
+      const index =
+        products.findIndex(
+          p => Number(p.id) === id
+        );
 
       if (index === -1) {
         return Response.json(
-          { error: "Proizvod nije pronađen." },
+          {
+            error:
+              "Proizvod nije pronađen."
+          },
           { status: 404 }
         );
       }
 
       const body = await req.json();
 
-      const product = normalize(body, id);
+      const product =
+        normalize(body, id);
 
       if (!product) {
         return Response.json(
@@ -181,27 +251,41 @@ export default async (
       return Response.json(product);
     }
 
-    // BRISANJE
+    // =========================
+    // BRISANJE PROIZVODA
+    // =========================
+
     if (method === "DELETE") {
-      if (!id || !Number.isInteger(id)) {
+      const id = getId(req, context);
+
+      if (id === null) {
         return Response.json(
-          { error: "Nedostaje ispravan ID." },
+          {
+            error:
+              "Nedostaje ispravan ID."
+          },
           { status: 400 }
         );
       }
 
-      const filtered = products.filter(
-        p => p.id !== id
-      );
+      const index =
+        products.findIndex(
+          p => Number(p.id) === id
+        );
 
-      if (filtered.length === products.length) {
+      if (index === -1) {
         return Response.json(
-          { error: "Proizvod nije pronađen." },
+          {
+            error:
+              "Proizvod nije pronađen."
+          },
           { status: 404 }
         );
       }
 
-      await saveProducts(filtered);
+      products.splice(index, 1);
+
+      await saveProducts(products);
 
       return new Response(null, {
         status: 204
