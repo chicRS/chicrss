@@ -1,0 +1,7 @@
+CHIC.RS DEPLOY FIX
+
+This ZIP keeps the existing Chic.rs site code, admin panel, logo, product fields and image support.
+The Netlify Database dependency was corrected from an invalid version to:
+@netlify/database ^2.0.0
+
+Do not upload the ZIP itself to the website. Extract it and upload the contents to the GitHub repository root.

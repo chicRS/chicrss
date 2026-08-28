@@ -10,6 +10,6 @@
     "@netlify/functions": "^4.2.3",
     "@netlify/blobs": "^9.0.0",
     "drizzle-orm": "^0.45.3",
-    "@netlify/database": "^1.0.0"
+    "@netlify/database": "^2.0.0"
   }
 }
