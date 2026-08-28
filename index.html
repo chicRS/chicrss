@@ -394,12 +394,13 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
     <!-- NETLIFY FORMA -->
 
     <form
-      name="chic-orders"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      id="orderForm"
-    >
+  name="chic-orders"
+  method="POST"
+  action="/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  id="orderForm"
+>
 
       <input
         type="hidden"
@@ -503,13 +504,14 @@ CHIC.RS ★ SNEAKERS ★ STREETWEAR ★
 
       </label>
 
-      <button
-        type="submit"
-        class="primary full"
-        id="submitOrder"
-      >
-        POŠALJI PORUDŽBINU →
-      </button>
+     <button
+  type="submit"
+  class="primary full"
+>
+  POŠALJI PORUDŽBINU →
+</button>
+
+        
 
     </form>
 
@@ -3231,7 +3233,67 @@ document
 /* =========================
    START
 ========================= */
+const orderForm = document.getElementById("orderForm");
 
+if (orderForm) {
+  orderForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const button = orderForm.querySelector("button[type='submit'], button");
+    const originalText = button ? button.textContent : "";
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "ŠALJEM PORUDŽBINU...";
+    }
+
+    try {
+      const formData = new FormData(orderForm);
+
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(formData).toString()
+      });
+
+      if (!response.ok) {
+        throw new Error("Netlify forma nije prihvatila porudžbinu.");
+      }
+
+      alert(
+        "Porudžbina je uspešno poslata! Hvala na kupovini."
+      );
+
+      cart = [];
+
+      localStorage.removeItem("chicCart");
+
+      renderCart();
+
+      orderForm.reset();
+
+      closeCheckout();
+
+    } catch (error) {
+
+      console.error("ORDER ERROR:", error);
+
+      alert(
+        "Greška pri slanju porudžbine. Pokušaj ponovo."
+      );
+
+    } finally {
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+
+    }
+  });
+}
 loadProducts();
 
 renderCart();
