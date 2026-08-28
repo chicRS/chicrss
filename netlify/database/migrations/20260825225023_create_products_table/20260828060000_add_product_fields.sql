@@ -1,8 +1,8 @@
 ALTER TABLE "products"
-ADD COLUMN "brand" text DEFAULT '' NOT NULL;
+ADD COLUMN IF NOT EXISTS "brand" text DEFAULT '' NOT NULL;
 
 ALTER TABLE "products"
-ADD COLUMN "stock" integer DEFAULT 0 NOT NULL;
+ADD COLUMN IF NOT EXISTS "stock" integer DEFAULT 0 NOT NULL;
 
 ALTER TABLE "products"
-ADD COLUMN "sort_order" integer DEFAULT 0 NOT NULL;
+ADD COLUMN IF NOT EXISTS "sort_order" integer DEFAULT 0 NOT NULL;
