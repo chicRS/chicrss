@@ -1,37 +1,12 @@
-# Chic.rs — bela/crna Netlify prodavnica
+# Chic.rs
 
-Ovo je gotova verzija Chic.rs sa belim/cream dizajnom i crnim detaljima.
+Ready for Netlify deployment.
 
-## Šta je urađeno
-- novi Chic logo kao `assets/logo.png`
-- profilna slika kao `assets/profile.jpg`
-- početna hero galerija koja automatski menja slike
-- hero galerija prikazuje logo, profilnu sliku i glavne slike proizvoda koje dodaš kroz Admin
-- strelice i tačkice za ručno menjanje hero slika
-- više slika po svakom proizvodu
-- galerija proizvoda sa strelicama i thumbnail slikama
-- u Adminu: dodavanje, izmena i brisanje proizvoda
-- cena, veličine, kategorija, brend, opis, oznaka, pozicija
-- status DOSTUPNO / NEDOSTUPNO
-- količina komada na stanju
-- više slika odjednom
-- menjanje redosleda slika, glavna slika i brisanje slike
-- automatski prikaz DOSTUPNO / RASPRODATO prema stanju
-- pretraga i filteri
-- korpa i checkout
-- dostava 680 RSD
-- zamena veličine uz prethodni dogovor
-- Netlify Functions + Netlify Blobs + Drizzle
-- SQL migracije za dodatna polja baze
+## Šta je popravljeno
+- Logo se učitava preko apsolutne putanje `/chic-logo.png`, pa više ne zavisi od trenutne rute.
+- Dodat je isti logo i u `assets/logo.png`.
+- API automatski proverava/kreira potrebne kolone za products tabelu (`description`, `brand`, `stock`, `sort_order`, `created_at`) kako bi admin čuvanje radilo i na staroj bazi.
+- Admin panel podržava slike, više slika, cenu, veličine, kategoriju, brend, status, količinu, poziciju i opis.
 
 ## Admin
-Podrazumevana lozinka je `chic2026` ako u Netlify Environment Variables nije postavljen `ADMIN_PASSWORD`.
-
-Za produkciju postavi:
-- `ADMIN_PASSWORD`
-- `ADMIN_SESSION_SECRET`
-
-## Deploy
-Repo poveži sa Netlify i koristi root folder projekta. Build command je `npm run build`, a publish directory je `.`.
-
-Ako Netlify traži primenu nove DB migracije, primeni SQL fajlove iz `netlify/database/migrations/`.
+Klikni `ADMIN` na sajtu. Podrazumevana lozinka je `chic2026`, osim ako je u Netlify Environment Variables postavljena `ADMIN_PASSWORD`.

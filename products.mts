@@ -1,5 +1,5 @@
 import type { Config } from "@netlify/functions";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { products } from "../../db/schema.js";
 import { isAuthorized, unauthorized } from "./lib/admin-auth.js";
@@ -28,6 +28,37 @@ function toClient(p: typeof products.$inferSelect) {
   };
 }
 
+
+let schemaReady = false;
+
+async function ensureProductSchema() {
+  if (schemaReady) return;
+  // Keeps an already-created Chic.rs database compatible with the admin panel.
+  // Safe to run repeatedly because every statement uses IF NOT EXISTS.
+  await db.execute(sql.raw(`
+    CREATE TABLE IF NOT EXISTS products (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      price INTEGER NOT NULL,
+      category TEXT NOT NULL,
+      description TEXT NOT NULL DEFAULT '',
+      sizes TEXT NOT NULL DEFAULT '',
+      badge TEXT NOT NULL DEFAULT '',
+      image TEXT NOT NULL,
+      brand TEXT NOT NULL DEFAULT '',
+      stock INTEGER NOT NULL DEFAULT 0,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `));
+  await db.execute(sql.raw(`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT ''`));
+  await db.execute(sql.raw(`ALTER TABLE products ADD COLUMN IF NOT EXISTS brand TEXT NOT NULL DEFAULT ''`));
+  await db.execute(sql.raw(`ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0`));
+  await db.execute(sql.raw(`ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0`));
+  await db.execute(sql.raw(`ALTER TABLE products ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT NOW()`));
+  schemaReady = true;
+}
+
 function getImages(body: any): string[] {
   if (Array.isArray(body.images)) return body.images.filter(Boolean).map(String);
   if (body.image) return [String(body.image)];
@@ -36,6 +67,13 @@ function getImages(body: any): string[] {
 
 export default async (req: Request, context: { params: Record<string, string> }) => {
   const id = context.params.id ? Number(context.params.id) : null;
+
+  try {
+    await ensureProductSchema();
+  } catch (error) {
+    console.error("Database initialization failed", error);
+    return Response.json({ error: "Database initialization failed" }, { status: 500 });
+  }
 
   if (req.method === "GET") {
     const rows = await db.select().from(products).orderBy(products.sortOrder, products.id);
